@@ -44,8 +44,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
           </p>
         </section>
         
-        <AdBanner type="desktop" />
-        <AdBanner type="mobile" />
+        <AdBanner type="728x90" />
+        <AdBanner type="320x50" />
         
         {/* We would pass the initialCategory to ConverterWorkspace here */}
         <div style={{ marginTop: '1rem' }}>

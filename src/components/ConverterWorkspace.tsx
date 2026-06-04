@@ -147,8 +147,8 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     if (groupsMap.size > 1 && validFiles.length > 1) {
       const newBulkGroups: BulkGroup[] = Array.from(groupsMap.entries()).map(([ext, groupFiles]) => {
         const category = getFileCategory(groupFiles[0]);
-        const availableFormats = FORMAT_MAPPINGS[category] || FORMAT_MAPPINGS['unknown'];
-        let targetFormat = availableFormats.find(f => f !== ext) || availableFormats[0];
+        const availableFormats = category !== 'unknown' ? FORMAT_MAPPINGS[category] : [];
+        let targetFormat = availableFormats.find(f => f !== ext) || availableFormats[0] || '';
         
         if (initialToFormat && availableFormats.includes(initialToFormat)) {
           targetFormat = initialToFormat;
@@ -168,10 +168,10 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
   const addFilesToQueue = (filesToAdd: File[], specificTargetFormats?: Record<string, string>) => {
     const newItems: FileItem[] = filesToAdd.map(file => {
       const category = getFileCategory(file);
-      const availableFormats = FORMAT_MAPPINGS[category] || FORMAT_MAPPINGS['unknown'];
+      const availableFormats = category !== 'unknown' ? FORMAT_MAPPINGS[category] : [];
       const ext = (file.name.split('.').pop() || '').toLowerCase();
       
-      let targetFormat = availableFormats.find(f => f !== ext) || availableFormats[0];
+      let targetFormat = availableFormats.find(f => f !== ext) || availableFormats[0] || '';
       
       if (specificTargetFormats && specificTargetFormats[ext]) {
         targetFormat = specificTargetFormats[ext];
@@ -328,7 +328,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                         onChange={(e) => updateBulkGroupFormat(group.ext, e.target.value)}
                         style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--border)', outline: 'none', background: 'var(--background)', fontWeight: 600 }}
                       >
-                        {(FORMAT_MAPPINGS[group.category] || FORMAT_MAPPINGS['unknown']).map(f => (
+                        {(group.category !== 'unknown' ? FORMAT_MAPPINGS[group.category] : []).map(f => (
                           <option key={f} value={f}>{f.toUpperCase()}</option>
                         ))}
                       </select>
@@ -487,7 +487,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                               minWidth: '90px'
                             }}
                           >
-                            {(FORMAT_MAPPINGS[file.category] || FORMAT_MAPPINGS['unknown']).map(f => (
+                            {(file.category !== 'unknown' ? FORMAT_MAPPINGS[file.category] : []).map(f => (
                               <option key={f} value={f}>{f.toUpperCase()}</option>
                             ))}
                           </select>
