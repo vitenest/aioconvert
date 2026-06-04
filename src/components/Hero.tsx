@@ -31,27 +31,12 @@ export default function Hero() {
         <span style={{ marginRight: '0.5rem' }}>✨</span> The Ultimate Conversion Engine
       </div>
       
-      <h1 style={{
-        fontSize: '4.5rem',
-        fontWeight: 800,
-        lineHeight: 1.05,
-        letterSpacing: '-0.04em',
-        color: 'var(--foreground)',
-        textWrap: 'balance'
-      }}>
+      <h1 className="hero-title">
         Convert Anything.<br />
         <span style={{ color: 'var(--secondary-foreground)' }}>With Zero Compromises.</span>
       </h1>
       
-      <p style={{
-        fontSize: '1.25rem',
-        color: 'var(--secondary-foreground)',
-        lineHeight: 1.6,
-        maxWidth: '640px',
-        fontWeight: 400,
-        letterSpacing: '-0.01em',
-        opacity: 0.8
-      }}>
+      <p className="hero-subtitle">
         Seamlessly transform your documents, images, audio, video, and archives into any format. Lightning-fast processing with absolute privacy.
       </p>
       
@@ -67,7 +52,7 @@ export default function Hero() {
       <div style={{ marginTop: '2.5rem', width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <AdBanner type="728x90" className="ad-desktop" />
         <AdBanner type="468x60" className="ad-tablet" />
-        <AdBanner type="320x50" className="ad-mobile" />
+        <AdBanner type="300x250" className="ad-mobile" />
       </div>
       
       <p style={{

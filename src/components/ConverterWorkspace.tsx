@@ -312,7 +312,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
 
              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {bulkGroups.map((group) => (
-                  <div key={group.ext} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', backgroundColor: '#ffffff', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: 'var(--shadow-sm)' }}>
+                  <div key={group.ext} className="bulk-item-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', backgroundColor: '#ffffff', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: 'var(--shadow-sm)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <div style={{ padding: '0.75rem', backgroundColor: 'var(--background)', borderRadius: '12px' }}>
                          {getCategoryIcon(group.category)}
@@ -416,7 +416,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
                   <AdBanner type="728x90" className="ad-desktop" />
-                  <AdBanner type="320x50" className="ad-mobile" />
+                  <AdBanner type="300x250" className="ad-mobile" />
                 </div>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
@@ -434,25 +434,12 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
                   <AdBanner type="728x90" className="ad-desktop" />
                   <AdBanner type="468x60" className="ad-tablet" />
-                  <AdBanner type="320x50" className="ad-mobile" />
+                  <AdBanner type="300x250" className="ad-mobile" />
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {files.map(file => (
-                    <div key={file.id} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '1.25rem 1.5rem',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid var(--border)',
-                      borderRadius: '16px',
-                      gap: '1.5rem',
-                      boxShadow: 'var(--shadow-sm)',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      transition: 'all 0.3s ease'
-                    }}>
+                    <div key={file.id} className="file-item-row">
                       {/* Progress Bar Background */}
                       {(file.status === 'converting' || file.status === 'done') && (
                         <div style={{
@@ -480,7 +467,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                         </div>
                       </div>
                       
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', zIndex: 1 }}>
+                      <div className="file-item-actions" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', zIndex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                           <span style={{ fontSize: '0.85rem', color: 'var(--secondary-foreground)', fontWeight: 500 }}>to</span>
                           <select 

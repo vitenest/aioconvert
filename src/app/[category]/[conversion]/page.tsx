@@ -59,7 +59,7 @@ export default async function ConversionPage({ params }: { params: Promise<{ cat
         </section>
         
         <AdBanner type="728x90" />
-        <AdBanner type="320x50" />
+        <AdBanner type="300x250" />
         
         {/* Pass props to pre-configure the workspace. We will modify ConverterWorkspace to accept these next. */}
         <div style={{ marginTop: '1rem' }}>

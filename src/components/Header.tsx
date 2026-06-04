@@ -20,10 +20,11 @@ export default function Header() {
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        width: 'auto',
-        minWidth: '700px',
+        width: '100%',
+        maxWidth: '1200px',
         borderRadius: '9999px', // Pill shape
-        gap: '3rem'
+        gap: '1rem',
+        flexWrap: 'wrap'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ 
@@ -45,7 +46,7 @@ export default function Header() {
           </Link>
         </div>
         
-        <nav style={{ display: 'flex', gap: '2.5rem', position: 'relative', height: '100%', alignItems: 'center' }}>
+        <nav className="header-nav-mobile" style={{ display: 'flex', gap: '1.5rem', position: 'relative', height: '100%', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
           {menus.map((menu) => (
             <div 
               key={menu.name}

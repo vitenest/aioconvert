@@ -16,9 +16,11 @@ export default function Home() {
         <Hero />
         
         {/* Top Header Ads - Responsive */}
-        <AdBanner type="728x90" className="ad-desktop" />
-        <AdBanner type="468x60" className="ad-tablet" />
-        <AdBanner type="320x50" className="ad-mobile" />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="468x60" className="ad-tablet" />
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
 
         {/* Main Workspace Layout with Sidebars */}
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', padding: '0 1rem' }}>
