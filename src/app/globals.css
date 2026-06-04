@@ -144,3 +144,9 @@ body {
 @media (min-width: 1350px) {
   .ad-skyscraper-right { display: flex !important; }
 }
+
+.ad-skyscraper-spacer { display: none !important; }
+
+@media (min-width: 1024px) and (max-width: 1349px) {
+  .ad-skyscraper-spacer { display: flex !important; }
+}

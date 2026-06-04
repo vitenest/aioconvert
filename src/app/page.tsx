@@ -54,6 +54,9 @@ export default function Home() {
             </div>
           </div>
           
+          {/* Spacer to balance when right ad is hidden but left is shown (1024px - 1349px) */}
+          <div className="ad-skyscraper-spacer" style={{ width: '160px', flexShrink: 0 }} />
+          
         </div>
       </main>
       
