@@ -2,17 +2,20 @@
 
 import React, { useEffect, useRef } from 'react';
 
-type AdType = 'desktop' | 'mobile' | 'native';
+export type AdType = 'native' | '468x60' | '300x250' | '160x600' | '160x300' | '320x50' | '728x90';
 
 export default function AdBanner({ type, className = '' }: { type: AdType, className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Determine the ID from environment variables
   const getAdId = () => {
     switch (type) {
-      case 'desktop': return process.env.NEXT_PUBLIC_ADSTERRA_DESKTOP_BANNER_ID;
-      case 'mobile': return process.env.NEXT_PUBLIC_ADSTERRA_MOBILE_BANNER_ID;
       case 'native': return process.env.NEXT_PUBLIC_ADSTERRA_NATIVE_ID;
+      case '468x60': return process.env.NEXT_PUBLIC_ADSTERRA_468X60;
+      case '300x250': return process.env.NEXT_PUBLIC_ADSTERRA_300X250;
+      case '160x600': return process.env.NEXT_PUBLIC_ADSTERRA_160X600;
+      case '160x300': return process.env.NEXT_PUBLIC_ADSTERRA_160X300;
+      case '320x50': return process.env.NEXT_PUBLIC_ADSTERRA_320X50;
+      case '728x90': return process.env.NEXT_PUBLIC_ADSTERRA_728X90;
       default: return null;
     }
   };
@@ -22,48 +25,51 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
 
   useEffect(() => {
     if (!isDummy && containerRef.current && !containerRef.current.hasChildNodes()) {
-      // Configuration script
-      const conf = document.createElement('script');
-      conf.type = 'text/javascript';
-      conf.innerHTML = `atOptions = {
-        'key' : '${adId}',
-        'format' : 'iframe',
-        'height' : ${type === 'desktop' ? 90 : type === 'mobile' ? 50 : 250},
-        'width' : ${type === 'desktop' ? 728 : type === 'mobile' ? 320 : 300},
-        'params' : {}
-      };`;
-      containerRef.current.appendChild(conf);
+      if (type === 'native') {
+        // Native Banner Injection
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.setAttribute('data-cfasync', 'false');
+        script.src = `https://pl29637924.effectivecpmnetwork.com/${adId}/invoke.js`;
+        containerRef.current.appendChild(script);
+      } else {
+        // Standard Banner Injection
+        const [wStr, hStr] = type.split('x');
+        const conf = document.createElement('script');
+        conf.type = 'text/javascript';
+        conf.innerHTML = `atOptions = {
+          'key' : '${adId}',
+          'format' : 'iframe',
+          'height' : ${parseInt(hStr, 10)},
+          'width' : ${parseInt(wStr, 10)},
+          'params' : {}
+        };`;
+        containerRef.current.appendChild(conf);
 
-      // Invocation script
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `//www.highperformanceformat.com/${adId}/invoke.js`;
-      containerRef.current.appendChild(script);
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `https://www.highperformanceformat.com/${adId}/invoke.js`;
+        containerRef.current.appendChild(script);
+      }
     }
   }, [adId, isDummy, type]);
 
-  // Determine dimensions based on typical Adsterra ad sizes
   const getDimensions = () => {
-    switch (type) {
-      case 'desktop': return { width: '728px', height: '90px' };
-      case 'mobile': return { width: '320px', height: '50px' };
-      case 'native': return { width: '100%', height: '250px' }; // Native ads blend in, height varies
-      default: return { width: '100%', height: '90px' };
-    }
+    if (type === 'native') return { width: '100%', height: 'auto', minHeight: '250px' };
+    const [w, h] = type.split('x');
+    return { width: `${w}px`, height: `${h}px`, minHeight: `${h}px` };
   };
 
   const dimensions = getDimensions();
 
-  // For responsive hiding (e.g. don't show mobile banner on desktop)
-  const responsiveClass = type === 'mobile' ? 'mobile-only-ad' : type === 'desktop' ? 'desktop-only-ad' : '';
-
   return (
-    <div className={`ad-container ${responsiveClass} ${className}`} style={{
+    <div className={`ad-container ${className}`} style={{
       display: 'flex',
       justifyContent: 'center',
-      margin: '2rem auto',
+      margin: '1.5rem auto',
       width: '100%',
-      maxWidth: '1000px',
+      maxWidth: type === 'native' ? '1000px' : dimensions.width,
       overflow: 'hidden'
     }}>
       {isDummy ? (
@@ -71,6 +77,7 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
           width: dimensions.width,
           maxWidth: '100%',
           height: dimensions.height,
+          minHeight: dimensions.minHeight,
           backgroundColor: 'rgba(0, 0, 0, 0.03)',
           border: '1px dashed var(--border)',
           borderRadius: '12px',
@@ -83,10 +90,19 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
           letterSpacing: '0.05em',
           textTransform: 'uppercase'
         }}>
-          Adsterra {type} Banner Placeholder
+          Ad Placeholder: {type}
         </div>
       ) : (
-        <div ref={containerRef} id={`container-${adId}`} style={{ minWidth: dimensions.width, minHeight: dimensions.height }} />
+        <div 
+          ref={containerRef} 
+          id={`container-${adId}`} 
+          style={{ 
+            minWidth: type === 'native' ? '100%' : dimensions.width, 
+            minHeight: dimensions.minHeight,
+            display: 'flex',
+            justifyContent: 'center'
+          }} 
+        />
       )}
     </div>
   );

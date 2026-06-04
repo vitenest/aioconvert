@@ -122,20 +122,25 @@ body {
 }
 
 /* Adsterra Responsive Utilities */
-.desktop-only-ad {
-  display: flex !important;
+.ad-desktop { display: none !important; }
+.ad-tablet { display: none !important; }
+.ad-mobile { display: flex !important; }
+.ad-skyscraper { display: none !important; }
+
+@media (min-width: 768px) {
+  .ad-desktop { display: none !important; }
+  .ad-tablet { display: flex !important; }
+  .ad-mobile { display: none !important; }
 }
 
-.mobile-only-ad {
-  display: none !important;
+@media (min-width: 1024px) {
+  .ad-desktop { display: flex !important; }
+  .ad-tablet { display: none !important; }
+  .ad-mobile { display: none !important; }
+  .ad-skyscraper { display: flex !important; }
+  .ad-skyscraper-right { display: none !important; }
 }
 
-@media (max-width: 768px) {
-  .desktop-only-ad {
-    display: none !important;
-  }
-  
-  .mobile-only-ad {
-    display: flex !important;
-  }
+@media (min-width: 1350px) {
+  .ad-skyscraper-right { display: flex !important; }
 }
