@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 
 export default function Hero() {
   return (
@@ -61,6 +62,10 @@ export default function Hero() {
         <Link href="#features" className="btn btn-secondary" style={{ padding: '0.85rem 2.5rem', fontSize: '1.05rem', textDecoration: 'none' }}>
           Explore Formats
         </Link>
+      </div>
+
+      <div style={{ marginTop: '2.5rem', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}>
+        <AdBanner type="native" />
       </div>
       
       <p style={{

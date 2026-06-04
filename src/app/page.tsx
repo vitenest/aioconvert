@@ -48,7 +48,7 @@ export default function Home() {
           </div>
 
           {/* Right Skyscraper (Wide Desktop Only) */}
-          <div className="ad-skyscraper-right" style={{ width: '160px', flexShrink: 0, marginTop: '2rem', display: 'none' }}>
+          <div className="ad-skyscraper-right" style={{ width: '160px', flexShrink: 0, marginTop: '2rem' }}>
             <div style={{ position: 'sticky', top: '2rem' }}>
               <AdBanner type="160x300" />
             </div>

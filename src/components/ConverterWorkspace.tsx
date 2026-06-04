@@ -5,6 +5,7 @@ import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, Fi
 
 import { FORMAT_MAPPINGS } from '@/lib/config';
 import { saveFileState, getFileStates, removeFileState } from '@/lib/storage';
+import AdBanner from '@/components/AdBanner';
 
 function getSessionId() {
   if (typeof document === 'undefined') return '';
@@ -413,6 +414,11 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
             {/* Advanced File List */}
             {files.length > 0 && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
+                  <AdBanner type="728x90" className="ad-desktop" />
+                  <AdBanner type="320x50" className="ad-mobile" />
+                </div>
+                
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span style={{ background: 'var(--primary)', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '1rem', fontSize: '0.875rem' }}>
@@ -423,6 +429,10 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                   <button onClick={handleConvert} className="btn btn-primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem 1.5rem' }}>
                     <ArrowRightCircle size={20} /> Process All Files
                   </button>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                  <AdBanner type="native" />
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
