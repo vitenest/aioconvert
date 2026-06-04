@@ -4,6 +4,7 @@ import ConverterWorkspace from '@/components/ConverterWorkspace';
 import SEOContent from '@/components/SEOContent';
 import AdBanner from '@/components/AdBanner';
 import { generateSeoContent } from '@/lib/seo-content';
+import LiveStats from '@/components/LiveStats';
 
 export default function Home() {
   const seo = generateSeoContent('File Converter');
@@ -58,12 +59,7 @@ export default function Home() {
       
       <footer style={{ padding: '3rem 2rem', textAlign: 'center', color: 'var(--secondary-foreground)', fontSize: '0.875rem' }}>
         <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', fontWeight: 600, color: 'var(--foreground)' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ fontSize: '1.2rem' }}>🚀</span> 12,847 conversions in the last 30 days
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ fontSize: '1.2rem' }}>👀</span> 114,293 page opens in the last 30 days
-          </span>
+          <LiveStats />
         </div>
         
         {/* Footer Ads */}
