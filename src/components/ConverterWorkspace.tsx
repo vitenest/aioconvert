@@ -431,8 +431,10 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                   </button>
                 </div>
                 
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-                  <AdBanner type="native" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
+                  <AdBanner type="728x90" className="ad-desktop" />
+                  <AdBanner type="468x60" className="ad-tablet" />
+                  <AdBanner type="320x50" className="ad-mobile" />
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

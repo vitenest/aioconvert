@@ -64,8 +64,10 @@ export default function Hero() {
         </Link>
       </div>
 
-      <div style={{ marginTop: '2.5rem', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}>
-        <AdBanner type="native" />
+      <div style={{ marginTop: '2.5rem', width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <AdBanner type="728x90" className="ad-desktop" />
+        <AdBanner type="468x60" className="ad-tablet" />
+        <AdBanner type="320x50" className="ad-mobile" />
       </div>
       
       <p style={{
