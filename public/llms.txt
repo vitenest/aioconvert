@@ -1,0 +1,19 @@
+# AIOConvert
+
+> AIOConvert is an advanced, privacy-first free online file converter suite.
+
+## About
+AIOConvert.com allows users to convert images, videos, documents, and archives securely online. All processing is fast, and files are automatically deleted after 30 minutes.
+
+## Core Features
+- **Zero Registration**: 100% free with no signups.
+- **Privacy Focus**: Uploaded files are deleted in 30 mins.
+- **Fast Conversion**: Lightning-fast servers process files quickly.
+- **Format Support**:
+  - Image: JPG to PNG, PNG to WebP, HEIF to JPG, etc.
+  - Video: MP4 to MP3, MKV to MP4, MOV to MP4, etc.
+  - Document: PDF to DOCX, DOCX to PDF, etc.
+  - Archive: ZIP to RAR, RAR to ZIP, etc.
+
+## Technical Details
+This application is built by ViteNest / ViteRank.

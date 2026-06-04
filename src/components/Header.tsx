@@ -58,42 +58,41 @@ export default function Header() {
               </Link>
               
               {activeMenu === menu.name && (
-                <div className="animate-slide-down" style={{ 
-                  position: 'absolute', 
-                  top: 'calc(100% + 1rem)', 
-                  left: '50%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  boxShadow: 'var(--shadow-lg)',
-                  padding: '1rem',
-                  minWidth: '220px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.25rem'
-                }}>
-                  <div style={{ padding: '0.5rem 1rem', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--secondary-foreground)', fontWeight: 600 }}>Popular Conversions</div>
-                  {menu.items.map(item => (
-                    <Link 
-                      key={item} 
-                      href={`${menu.path}/${item}`}
-                      style={{ 
-                        padding: '0.75rem 1rem', 
-                        textDecoration: 'none', 
-                        color: 'var(--foreground)', 
-                        fontSize: '0.9rem',
-                        borderRadius: '8px',
-                        fontWeight: 500,
-                        display: 'block',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--secondary)'; e.currentTarget.style.transform = 'translateX(4px)'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
-                    >
-                      {item.split('-').join(' ').toUpperCase()}
-                    </Link>
-                  ))}
+                <div style={{ position: 'absolute', top: '100%', left: '50%', paddingTop: '1rem', zIndex: 10 }}>
+                  <div className="animate-slide-down" style={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '16px',
+                    boxShadow: 'var(--shadow-lg)',
+                    padding: '1rem',
+                    minWidth: '220px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.25rem'
+                  }}>
+                    <div style={{ padding: '0.5rem 1rem', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--secondary-foreground)', fontWeight: 600 }}>Popular Conversions</div>
+                    {menu.items.map(item => (
+                      <Link 
+                        key={item} 
+                        href={`${menu.path}/${item}`}
+                        style={{ 
+                          padding: '0.75rem 1rem', 
+                          textDecoration: 'none', 
+                          color: 'var(--foreground)', 
+                          fontSize: '0.9rem',
+                          borderRadius: '8px',
+                          fontWeight: 500,
+                          display: 'block',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--secondary)'; e.currentTarget.style.transform = 'translateX(4px)'; }}
+                        onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
+                      >
+                        {item.split('-').join(' ').toUpperCase()}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

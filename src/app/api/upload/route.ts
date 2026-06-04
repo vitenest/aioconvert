@@ -19,6 +19,7 @@ export async function POST(req: Request) {
     const file = formData.get('file') as File;
     const category = formData.get('category') as string;
     const targetFormat = formData.get('targetFormat') as string;
+    const sessionId = formData.get('sessionId') as string | null;
 
     if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 
@@ -39,10 +40,10 @@ export async function POST(req: Request) {
 
     // Insert job into queue
     const stmt = db.prepare(`
-      INSERT INTO jobs (id, original_name, category, target_format, input_path, created_at)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO jobs (id, original_name, category, target_format, input_path, created_at, session_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
-    stmt.run(jobId, originalName, category, targetFormat, inputPath, Date.now());
+    stmt.run(jobId, originalName, category, targetFormat, inputPath, Date.now(), sessionId || null);
 
     return NextResponse.json({ jobId });
   } catch (err) {

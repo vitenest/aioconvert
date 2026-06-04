@@ -5,11 +5,20 @@ import fs from 'fs';
 // Run every minute
 cron.schedule('* * * * *', () => {
   try {
-    // 15 minutes in milliseconds
-    const FIFTEEN_MINUTES = 15 * 60 * 1000;
-    const cutoffTime = Date.now() - FIFTEEN_MINUTES;
+    const now = Date.now();
+    const THIRTY_MINUTES = 30 * 60 * 1000;
+    const FORTY_FIVE_MINUTES = 45 * 60 * 1000;
 
-    const expiredJobs = db.prepare('SELECT id, input_path, output_path FROM jobs WHERE status = "done" AND completed_at < ?').all(cutoffTime) as {
+    const expiredJobs = db.prepare(`
+      SELECT id, input_path, output_path 
+      FROM jobs 
+      WHERE status = 'done' 
+        AND (
+          (downloaded_at IS NOT NULL AND completed_at < ?)
+          OR
+          (downloaded_at IS NULL AND completed_at < ?)
+        )
+    `).all(now - THIRTY_MINUTES, now - FORTY_FIVE_MINUTES) as {
       id: string;
       input_path: string;
       output_path: string | null;

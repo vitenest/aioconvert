@@ -14,6 +14,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ jobId: s
       return NextResponse.json({ error: 'File not found or not ready' }, { status: 404 });
     }
 
+    // Record download timestamp for retention logic
+    try {
+      db.prepare('UPDATE jobs SET downloaded_at = ? WHERE id = ?').run(Date.now(), jobId);
+    } catch (e) {
+      console.error('Failed to update downloaded_at:', e);
+    }
+
     const stat = fs.statSync(job.output_path);
     const fileStream = fs.createReadStream(job.output_path);
     

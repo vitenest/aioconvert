@@ -31,8 +31,22 @@ db.exec(`
     output_path TEXT,
     error_message TEXT,
     created_at INTEGER NOT NULL,
-    completed_at INTEGER
+    completed_at INTEGER,
+    session_id TEXT,
+    downloaded_at INTEGER
   )
 `);
+
+try {
+  db.exec(`ALTER TABLE jobs ADD COLUMN session_id TEXT`);
+} catch (e) {
+  // Ignore if column exists
+}
+
+try {
+  db.exec(`ALTER TABLE jobs ADD COLUMN downloaded_at INTEGER`);
+} catch (e) {
+  // Ignore if column exists
+}
 
 export default db;

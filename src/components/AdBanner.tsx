@@ -21,15 +21,26 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
   const isDummy = !adId || adId.includes('dummy');
 
   useEffect(() => {
-    // If it's a real Adsterra ID, we would inject their script here dynamically.
-    // Example: 
-    // if (!isDummy && containerRef.current) {
-    //   const script = document.createElement('script');
-    //   script.type = 'text/javascript';
-    //   script.src = `//www.highperformanceformat.com/${adId}/invoke.js`;
-    //   containerRef.current.appendChild(script);
-    // }
-  }, [adId, isDummy]);
+    if (!isDummy && containerRef.current && !containerRef.current.hasChildNodes()) {
+      // Configuration script
+      const conf = document.createElement('script');
+      conf.type = 'text/javascript';
+      conf.innerHTML = `atOptions = {
+        'key' : '${adId}',
+        'format' : 'iframe',
+        'height' : ${type === 'desktop' ? 90 : type === 'mobile' ? 50 : 250},
+        'width' : ${type === 'desktop' ? 728 : type === 'mobile' ? 320 : 300},
+        'params' : {}
+      };`;
+      containerRef.current.appendChild(conf);
+
+      // Invocation script
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `//www.highperformanceformat.com/${adId}/invoke.js`;
+      containerRef.current.appendChild(script);
+    }
+  }, [adId, isDummy, type]);
 
   // Determine dimensions based on typical Adsterra ad sizes
   const getDimensions = () => {

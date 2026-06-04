@@ -4,6 +4,17 @@ import React, { useState, useRef } from 'react';
 import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, File as FileIcon, Trash2, ArrowRightCircle, CheckCircle2, Loader2, Settings, AlertCircle, FolderInput, FilePlus } from 'lucide-react';
 
 import { FORMAT_MAPPINGS } from '@/lib/config';
+import { saveFileState, getFileStates, removeFileState } from '@/lib/storage';
+
+function getSessionId() {
+  if (typeof document === 'undefined') return '';
+  const match = document.cookie.match(new RegExp('(^| )aio_session=([^;]+)'));
+  if (match) return match[2];
+  const newSessionId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+  // 30 days expiry
+  document.cookie = `aio_session=${newSessionId}; path=/; max-age=2592000; SameSite=Strict`;
+  return newSessionId;
+}
 
 type FileCategory = 'image' | 'video' | 'audio' | 'document' | 'archive' | 'unknown';
 
@@ -61,6 +72,34 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
   // Bulk Setup State
   const [bulkGroups, setBulkGroups] = useState<BulkGroup[]>([]);
   const [showBulkSetup, setShowBulkSetup] = useState(false);
+
+  React.useEffect(() => {
+    const sessionId = getSessionId();
+    
+    const handleExit = () => {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/cleanup', sessionId);
+      }
+    };
+    
+    window.addEventListener('pagehide', handleExit);
+    
+    getFileStates().then(persistedFiles => {
+      if (persistedFiles && persistedFiles.length > 0) {
+        const loadedItems: FileItem[] = persistedFiles.map(p => ({
+          id: p.id,
+          file: p.file,
+          category: p.category as FileCategory,
+          targetFormat: p.targetFormat,
+          status: 'idle',
+          progress: 0
+        }));
+        setFiles(loadedItems);
+      }
+    });
+
+    return () => window.removeEventListener('pagehide', handleExit);
+  }, []);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
@@ -140,8 +179,11 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         targetFormat = initialToFormat;
       }
       
+      const id = Math.random().toString(36).substring(7);
+      saveFileState(id, file, category, targetFormat);
+      
       return {
-        id: Math.random().toString(36).substring(7),
+        id,
         file,
         category,
         targetFormat,
@@ -168,10 +210,18 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
 
   const removeFile = (id: string) => {
     setFiles(prev => prev.filter(f => f.id !== id));
+    removeFileState(id);
   };
 
   const updateFormat = (id: string, format: string) => {
-    setFiles(prev => prev.map(f => f.id === id ? { ...f, targetFormat: format } : f));
+    setFiles(prev => {
+      const updated = prev.map(f => f.id === id ? { ...f, targetFormat: format } : f);
+      const changed = updated.find(f => f.id === id);
+      if (changed) {
+        saveFileState(id, changed.file, changed.category, format);
+      }
+      return updated;
+    });
   };
 
   const updateBulkGroupFormat = (ext: string, format: string) => {
@@ -192,6 +242,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         formData.append('file', fileItem.file);
         formData.append('category', fileItem.category);
         formData.append('targetFormat', fileItem.targetFormat);
+        formData.append('sessionId', getSessionId());
 
         // Upload phase
         const uploadRes = await fetch('/api/upload', {
