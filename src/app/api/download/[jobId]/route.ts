@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import fs from 'fs';
+import { Readable } from 'stream';
 
 export async function GET(req: Request, { params }: { params: Promise<{ jobId: string }> }) {
   try {
@@ -31,17 +32,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ jobId: s
       ? job.original_name.slice(0, -ext.length - 1) + `.${job.target_format}`
       : `${job.original_name}.${job.target_format}`;
 
-    // Convert Node readable stream to Web ReadableStream
-    const webStream = new ReadableStream({
-      start(controller) {
-        fileStream.on('data', (chunk) => controller.enqueue(chunk));
-        fileStream.on('end', () => controller.close());
-        fileStream.on('error', (err) => controller.error(err));
-      },
-      cancel() {
-        fileStream.destroy();
-      }
-    });
+    // High-performance streaming:
+    // Convert Node readable stream to Web ReadableStream directly using native toWeb
+    // This handles backpressure automatically and is significantly faster
+    const webStream = Readable.toWeb(fileStream) as any as ReadableStream;
 
     return new NextResponse(webStream, {
       headers: {

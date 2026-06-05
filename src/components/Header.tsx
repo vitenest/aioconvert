@@ -59,7 +59,7 @@ export default function Header() {
               </Link>
               
               {activeMenu === menu.name && (
-                <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', paddingTop: '0.5rem', zIndex: 10 }}>
+                <div style={{ position: 'absolute', top: '100%', left: '50%', paddingTop: '0.5rem', zIndex: 10 }}>
                   <div className="animate-slide-down" style={{ 
                     backgroundColor: 'rgba(255, 255, 255, 0.95)', 
                     backdropFilter: 'blur(20px)',

@@ -424,7 +424,6 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
             <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Conversion Workspace</h2>
             <p style={{ color: 'var(--secondary-foreground)', opacity: 0.8 }}>Advanced multi-thread processing engine</p>
           </div>
-          <Settings size={24} color="var(--secondary-foreground)" style={{ cursor: 'pointer' }} />
         </div>
 
         {/* Show Bulk Setup UI if triggered */}
