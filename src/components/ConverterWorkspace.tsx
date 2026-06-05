@@ -61,20 +61,9 @@ const getCategoryIcon = (category: FileCategory) => {
   }
 };
 
-type BulkGroup = {
-  ext: string;
-  category: FileCategory;
-  files: File[];
-  targetFormat: string;
-};
-
 export default function ConverterWorkspace({ initialCategory, initialFromFormat, initialToFormat }: { initialCategory?: string, initialFromFormat?: string, initialToFormat?: string }) {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  
-  // Bulk Setup State
-  const [bulkGroups, setBulkGroups] = useState<BulkGroup[]>([]);
-  const [showBulkSetup, setShowBulkSetup] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
 
   React.useEffect(() => {
@@ -167,38 +156,8 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         supportedFiles.push(file);
       }
     });
-
-    // Group supported files by extension
-    const groupsMap = new Map<string, File[]>();
-    supportedFiles.forEach(file => {
-      const ext = (file.name.split('.').pop() || 'unknown').toLowerCase();
-      if (!groupsMap.has(ext)) groupsMap.set(ext, []);
-      groupsMap.get(ext)!.push(file);
-    });
-
-    // Immediately queue unsupported files to show error state
-    if (unsupportedFiles.length > 0) {
-      addFilesToQueue(unsupportedFiles);
-    }
-
-    // If it's a bulk upload with multiple supported extensions, show bulk setup
-    if (groupsMap.size > 1 && supportedFiles.length > 1) {
-      const newBulkGroups: BulkGroup[] = Array.from(groupsMap.entries()).map(([ext, groupFiles]) => {
-        const category = getFileCategory(groupFiles[0]);
-        const availableFormats = category !== 'unknown' ? FORMAT_MAPPINGS[category] : [];
-        let targetFormat = availableFormats.find(f => f !== ext) || availableFormats[0] || '';
-        
-        if (initialToFormat && availableFormats.includes(initialToFormat)) {
-          targetFormat = initialToFormat;
-        }
-
-        return { ext, category, files: groupFiles, targetFormat };
-      });
-
-      setBulkGroups(prev => [...prev, ...newBulkGroups]);
-      setShowBulkSetup(true);
-    } else if (supportedFiles.length > 0) {
-      // Direct add
+    // Direct add
+    if (supportedFiles.length > 0) {
       addFilesToQueue(supportedFiles);
     }
   };
@@ -238,32 +197,12 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     setFiles(prev => [...prev, ...newItems]);
   };
 
-  const handleBulkSetupConfirm = () => {
-    const specificFormats: Record<string, string> = {};
-    const allFiles: File[] = [];
-    
-    bulkGroups.forEach(group => {
-      specificFormats[group.ext] = group.targetFormat;
-      allFiles.push(...group.files);
-    });
-
-    addFilesToQueue(allFiles, specificFormats);
-    setShowBulkSetup(false);
-    setBulkGroups([]);
-  };
 
   const removeFile = (id: string) => {
     setFiles(prev => prev.filter(f => f.id !== id));
     removeFileState(id);
   };
 
-  const removeBulkGroup = (ext: string) => {
-    setBulkGroups(prev => prev.filter(g => g.ext !== ext));
-    if (bulkGroups.length <= 1) {
-      setShowBulkSetup(false);
-      setBulkGroups([]);
-    }
-  };
 
   const updateFormat = (id: string, format: string) => {
     setFiles(prev => {
@@ -276,9 +215,6 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     });
   };
 
-  const updateBulkGroupFormat = (ext: string, format: string) => {
-    setBulkGroups(prev => prev.map(g => g.ext === ext ? { ...g, targetFormat: format } : g));
-  };
 
   const processFile = async (fileItem: FileItem) => {
     try {
@@ -426,61 +362,8 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
           </div>
         </div>
 
-        {/* Show Bulk Setup UI if triggered */}
-        {showBulkSetup ? (
-          <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-             <div style={{ padding: '1.5rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', border: '1px solid var(--border)', borderRadius: '16px' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>Bulk Folder Conversion Setup</h3>
-                <p style={{ color: 'var(--secondary-foreground)', fontSize: '0.95rem' }}>We detected multiple file types. Choose the target formats for each group.</p>
-             </div>
-
-             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {bulkGroups.map((group) => (
-                  <div key={group.ext} className="bulk-item-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', backgroundColor: '#ffffff', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: 'var(--shadow-sm)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <div style={{ padding: '0.75rem', backgroundColor: 'var(--background)', borderRadius: '12px' }}>
-                         {getCategoryIcon(group.category)}
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{group.ext.toUpperCase()} Files</div>
-                        <div style={{ fontSize: '0.85rem', color: 'var(--secondary-foreground)' }}>{group.files.length} files detected</div>
-                      </div>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <span style={{ fontSize: '0.9rem', color: 'var(--secondary-foreground)' }}>Convert all to:</span>
-                      <select 
-                        value={group.targetFormat}
-                        onChange={(e) => updateBulkGroupFormat(group.ext, e.target.value)}
-                        style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--border)', outline: 'none', background: 'var(--background)', fontWeight: 600 }}
-                      >
-                        {(group.category !== 'unknown' ? FORMAT_MAPPINGS[group.category] : []).map(f => (
-                          <option key={f} value={f}>{f.toUpperCase()}</option>
-                        ))}
-                      </select>
-                      <button 
-                        onClick={() => removeBulkGroup(group.ext)}
-                        style={{ background: 'white', border: '1px solid var(--border)', cursor: 'pointer', color: 'var(--destructive-foreground)', padding: '0.6rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--destructive)'}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
-                        title="Remove this group"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-             </div>
-
-             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                <button onClick={() => { setShowBulkSetup(false); setBulkGroups([]); }} className="btn btn-secondary">Cancel</button>
-                <button onClick={handleBulkSetupConfirm} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle2 size={18} /> Confirm & Add to Queue
-                </button>
-             </div>
-          </div>
-        ) : (
-          <>
-            {/* Advanced Dropzone */}
+        {/* Show File Selection Area if queue is empty */}
+        {files.length === 0 && (
             <div 
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -543,8 +426,9 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 style={{ display: 'none' }} 
               />
             </div>
+        )}
 
-            {/* Advanced File List */}
+        {/* Advanced File List */}
             {files.length > 0 && (
               <div ref={filesQueuedRef} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <ResponsiveAd margin="1rem 0" />
@@ -765,8 +649,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 )}
               </div>
             )}
-          </>
-        )}
+
       </div>
     </section>
   );
