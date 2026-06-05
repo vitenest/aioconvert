@@ -6,15 +6,29 @@ export default function LiveStats() {
   const [users, setUsers] = useState(114293); // Start with a believable base number
 
   useEffect(() => {
-    // Calculate a static number based on the current time so it increments
-    // between visits but remains stable while the user is on the page.
-    // Base is 114,293 users. We simulate ~20 new users per hour since June 1, 2024.
+    // Calculate a static number based on the current time
     const baseDate = new Date('2024-06-01T00:00:00Z').getTime();
     const now = Date.now();
     const diffHours = Math.max(0, (now - baseDate) / (1000 * 60 * 60));
-    
     const calculatedUsers = 114293 + Math.floor(diffHours * 20);
-    setUsers(calculatedUsers);
+    
+    // Get the highest known count from local storage
+    const storedUsersStr = localStorage.getItem('globalUserCount');
+    let storedUsers = storedUsersStr ? parseInt(storedUsersStr, 10) : calculatedUsers;
+
+    // Ensure our baseline doesn't fall behind the clock calculation
+    if (calculatedUsers > storedUsers) {
+      storedUsers = calculatedUsers;
+    }
+
+    // If this is a new browser tab/session, increase the count by exactly 1
+    if (!sessionStorage.getItem('visited')) {
+      storedUsers += 1;
+      sessionStorage.setItem('visited', 'true');
+      localStorage.setItem('globalUserCount', storedUsers.toString());
+    }
+
+    setUsers(storedUsers);
   }, []);
 
   return (
