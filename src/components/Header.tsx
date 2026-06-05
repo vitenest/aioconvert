@@ -123,7 +123,7 @@ export default function Header() {
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.08)'} 
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.04)'}
             >
-              <span style={{ fontSize: '1rem' }}>✨</span> Explore ViteNest Tools
+              More Tools
             </a>
           </div>
         </nav>
@@ -218,7 +218,7 @@ export default function Header() {
               gap: '0.5rem' 
             }}
           >
-            <span style={{ fontSize: '1.2rem' }}>✨</span> Explore ViteNest Tools
+            More Tools
           </a>
           
           <Link 
