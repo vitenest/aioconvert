@@ -549,7 +549,20 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 
                 {/* Ad when download buttons appear */}
                 {files.some(f => f.status === 'done') && (
-                  <ResponsiveAd margin="2rem 0 1rem" />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', gap: '1rem' }}>
+                    <button 
+                      onClick={() => {
+                        const sessionId = getSessionId();
+                        removeFileState(sessionId);
+                        setFiles([]);
+                      }}
+                      className="btn btn-secondary" 
+                      style={{ padding: '0.8rem 2.5rem', fontSize: '1.05rem', fontWeight: 600, display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: 'var(--foreground)', color: 'var(--background)' }}
+                    >
+                      <FilePlus size={20} /> Convert Another File
+                    </button>
+                    <ResponsiveAd margin="1rem 0" />
+                  </div>
                 )}
               </div>
             )}
