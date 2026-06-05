@@ -116,6 +116,10 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
       setTimeout(() => {
         filesQueuedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
+    } else if (prevFilesLength.current > 0 && files.length === 0) {
+      setTimeout(() => {
+        dropzoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
     }
     prevFilesLength.current = files.length;
   }, [files.length]);
