@@ -9,8 +9,37 @@ type SEOContentProps = {
 };
 
 export default function SEOContent({ about, features, faqs }: SEOContentProps) {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AIOConvert Tool",
+    "operatingSystem": "All",
+    "applicationCategory": "UtilitiesApplication",
+    "description": about,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
   return (
     <section style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 2rem' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       <div style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--foreground)' }}>About This Tool</h2>
         <p style={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'var(--secondary-foreground)' }}>{about}</p>

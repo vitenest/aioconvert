@@ -3,8 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+import { Menu, X } from 'lucide-react';
+
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menus = [
     { name: 'Image', path: '/image-converter', items: ['jpg-to-png', 'png-to-webp', 'heif-to-jpg'] },
@@ -46,7 +49,7 @@ export default function Header() {
           </Link>
         </div>
         
-        <nav className="header-nav-mobile" style={{ display: 'flex', gap: '1.5rem', position: 'relative', height: '100%', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <nav className="header-nav-desktop" style={{ display: 'none', gap: '1.5rem', position: 'relative', height: '100%', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
           {menus.map((menu) => (
             <div 
               key={menu.name}
@@ -100,12 +103,84 @@ export default function Header() {
           ))}
         </nav>
         
-        <div>
+        <div className="header-nav-desktop">
           <Link href="/#convert" className="btn btn-primary" style={{ textDecoration: 'none', padding: '0.6rem 1.25rem', fontSize: '0.85rem' }}>
             Convert Now
           </Link>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="header-mobile-toggle"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{
+            display: 'none',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0.5rem',
+            color: 'var(--foreground)',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </header>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="header-mobile-menu animate-slide-down" style={{
+          position: 'absolute',
+          top: 'calc(100% + 1rem)',
+          left: '1rem',
+          right: '1rem',
+          backgroundColor: 'rgba(255, 255, 255, 0.98)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid var(--border)',
+          borderRadius: '16px',
+          boxShadow: 'var(--shadow-lg)',
+          padding: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          maxHeight: '70vh',
+          overflowY: 'auto'
+        }}>
+          {menus.map((menu) => (
+            <div key={menu.name} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Link 
+                href={menu.path} 
+                onClick={() => setIsMobileMenuOpen(false)}
+                style={{ textDecoration: 'none', color: 'var(--foreground)', fontWeight: 600, fontSize: '1.1rem', padding: '0.5rem 0' }}
+              >
+                {menu.name}
+              </Link>
+              <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem', borderLeft: '2px solid var(--border)', gap: '0.25rem' }}>
+                {menu.items.map(item => (
+                  <Link 
+                    key={item} 
+                    href={`${menu.path}/${item}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{ textDecoration: 'none', color: 'var(--secondary-foreground)', fontSize: '0.95rem', padding: '0.4rem 0' }}
+                  >
+                    {item.split('-').join(' ').toUpperCase()}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+          
+          <Link 
+            href="/#convert" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="btn btn-primary" 
+            style={{ textDecoration: 'none', padding: '0.8rem', fontSize: '1rem', marginTop: '1rem', textAlign: 'center' }}
+          >
+            Convert Now
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
