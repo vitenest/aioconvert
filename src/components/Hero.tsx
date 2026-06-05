@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import AdBanner from '@/components/AdBanner';
+import ResponsiveAd from '@/components/ResponsiveAd';
 
 export default function Hero() {
   return (
@@ -49,16 +49,12 @@ export default function Hero() {
         </Link>
       </div>
 
-      <div style={{ marginTop: '2.5rem', width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <AdBanner type="728x90" className="ad-desktop" />
-        <AdBanner type="468x60" className="ad-tablet" />
-        <AdBanner type="300x250" className="ad-mobile" />
-      </div>
+      <ResponsiveAd margin="2rem 0 1rem" />
       
       <p style={{
         fontSize: '0.8rem',
         color: 'var(--secondary-foreground)',
-        marginTop: '2.5rem',
+        marginTop: '0.5rem',
         fontWeight: 500,
         display: 'flex',
         alignItems: 'center',
@@ -67,6 +63,8 @@ export default function Hero() {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
         Your privacy is guaranteed. Files are auto-deleted after 30 minutes.
       </p>
+
+      <ResponsiveAd margin="1rem 0 2rem" />
     </section>
   );
 }

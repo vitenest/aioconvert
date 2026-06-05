@@ -3,6 +3,8 @@ import Header from '@/components/Header';
 import ConverterWorkspace from '@/components/ConverterWorkspace';
 import SEOContent from '@/components/SEOContent';
 import AdBanner from '@/components/AdBanner';
+import ResponsiveAd from '@/components/ResponsiveAd';
+import MainLayout from '@/components/MainLayout';
 import { getCategoryFromSlug, CATEGORY_NAMES, FORMAT_MAPPINGS } from '@/lib/config';
 import { generateSeoContent } from '@/lib/seo-content';
 import { Metadata } from 'next';
@@ -57,22 +59,19 @@ export default async function ConversionPage({ params }: { params: Promise<{ cat
             {seo.description}
           </p>
         </section>
-        
-        <AdBanner type="728x90" />
-        <AdBanner type="300x250" />
-        
-        {/* Pass props to pre-configure the workspace. We will modify ConverterWorkspace to accept these next. */}
-        <div style={{ marginTop: '1rem' }}>
-          <ConverterWorkspace initialCategory={categoryType} initialFromFormat={from} initialToFormat={to} />
-        </div>
-        
-        <AdBanner type="native" />
-        
-        <SEOContent about={seo.about} features={seo.features} faqs={seo.faqs} />
+        <MainLayout>
+          <ResponsiveAd margin="1rem 0" />
+          
+          {/* Pass props to pre-configure the workspace. */}
+          <div style={{ marginTop: '1rem' }}>
+            <ConverterWorkspace initialCategory={categoryType} initialFromFormat={from} initialToFormat={to} />
+          </div>
+          
+          <AdBanner type="native" />
+          
+          <SEOContent about={seo.about} features={seo.features} faqs={seo.faqs} />
+        </MainLayout>
       </main>
-      <footer style={{ padding: '2rem', textAlign: 'center', color: 'var(--secondary-foreground)', fontSize: '0.875rem' }}>
-        <p>&copy; 2026 AIOConverter. All rights reserved.</p>
-      </footer>
     </>
   );
 }

@@ -4,6 +4,8 @@ import Hero from '@/components/Hero';
 import ConverterWorkspace from '@/components/ConverterWorkspace';
 import SEOContent from '@/components/SEOContent';
 import AdBanner from '@/components/AdBanner';
+import ResponsiveAd from '@/components/ResponsiveAd';
+import MainLayout from '@/components/MainLayout';
 import { getCategoryFromSlug, CATEGORY_NAMES } from '@/lib/config';
 import { generateSeoContent } from '@/lib/seo-content';
 import { Metadata } from 'next';
@@ -43,22 +45,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             {seo.description}
           </p>
         </section>
-        
-        <AdBanner type="728x90" />
-        <AdBanner type="300x250" />
-        
-        {/* We would pass the initialCategory to ConverterWorkspace here */}
-        <div style={{ marginTop: '1rem' }}>
-          <ConverterWorkspace />
-        </div>
-        
-        <AdBanner type="native" />
-        
-        <SEOContent about={seo.about} features={seo.features} faqs={seo.faqs} />
+        <MainLayout>
+          <ResponsiveAd margin="1rem 0" />
+          
+          <div style={{ marginTop: '1rem' }}>
+            <ConverterWorkspace />
+          </div>
+          
+          <AdBanner type="native" />
+          
+          <SEOContent about={seo.about} features={seo.features} faqs={seo.faqs} />
+        </MainLayout>
       </main>
-      <footer style={{ padding: '2rem', textAlign: 'center', color: 'var(--secondary-foreground)', fontSize: '0.875rem' }}>
-        <p>&copy; 2026 AIOConverter. All rights reserved.</p>
-      </footer>
     </>
   );
 }

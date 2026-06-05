@@ -6,6 +6,7 @@ import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, Fi
 import { FORMAT_MAPPINGS } from '@/lib/config';
 import { saveFileState, getFileStates, removeFileState } from '@/lib/storage';
 import AdBanner from '@/components/AdBanner';
+import ResponsiveAd from '@/components/ResponsiveAd';
 
 function getSessionId() {
   if (typeof document === 'undefined') return '';
@@ -434,10 +435,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
             {/* Advanced File List */}
             {files.length > 0 && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
-                  <AdBanner type="728x90" className="ad-desktop" />
-                  <AdBanner type="300x250" className="ad-mobile" />
-                </div>
+                <ResponsiveAd margin="1rem 0" />
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -451,11 +449,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                   </button>
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
-                  <AdBanner type="728x90" className="ad-desktop" />
-                  <AdBanner type="468x60" className="ad-tablet" />
-                  <AdBanner type="300x250" className="ad-mobile" />
-                </div>
+                <ResponsiveAd margin="1rem 0" />
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {files.map(file => (
@@ -552,6 +546,11 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                     </div>
                   ))}
                 </div>
+                
+                {/* Ad when download buttons appear */}
+                {files.some(f => f.status === 'done') && (
+                  <ResponsiveAd margin="2rem 0 1rem" />
+                )}
               </div>
             )}
           </>
