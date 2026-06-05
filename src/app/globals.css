@@ -133,7 +133,8 @@ body {
 /* Adsterra Responsive Utilities */
 .ad-desktop { display: none !important; }
 .ad-tablet { display: none !important; }
-.ad-mobile { display: flex !important; }
+.ad-mobile { display: flex !important; max-width: 250px !important; overflow: hidden; margin: 0 auto; justify-content: center; }
+.ad-mobile iframe, .ad-mobile div { max-width: 100% !important; }
 .ad-skyscraper { display: none !important; }
 
 @media (min-width: 768px) {

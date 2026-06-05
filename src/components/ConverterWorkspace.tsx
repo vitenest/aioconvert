@@ -461,6 +461,9 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 <button onClick={() => fileInputRef.current?.click()} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <FilePlus size={18} /> Select Files
                 </button>
+                <button onClick={() => folderInputRef.current?.click()} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <FolderInput size={18} /> Select Folder
+                </button>
               </div>
 
               <input 
@@ -468,6 +471,16 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 multiple 
                 ref={fileInputRef} 
                 onChange={handleFileSelect} 
+                style={{ display: 'none' }} 
+              />
+              <input 
+                type="file" 
+                multiple 
+                ref={folderInputRef} 
+                onChange={handleFileSelect} 
+                // @ts-ignore
+                webkitdirectory="true" 
+                directory="true"
                 style={{ display: 'none' }} 
               />
             </div>
