@@ -245,14 +245,34 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         formData.append('targetFormat', fileItem.targetFormat);
         formData.append('sessionId', getSessionId());
 
-        // Upload phase
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        // Upload phase with progress tracking
+        const jobId = await new Promise<string>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/api/upload', true);
+          
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const progress = Math.round((event.loaded / event.total) * 100);
+              setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, progress } : f));
+            }
+          };
 
-        if (!uploadRes.ok) throw new Error('Upload failed');
-        const { jobId } = await uploadRes.json();
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                const res = JSON.parse(xhr.responseText);
+                resolve(res.jobId);
+              } catch (e) {
+                reject(new Error('Invalid response'));
+              }
+            } else {
+              reject(new Error('Upload failed'));
+            }
+          };
+
+          xhr.onerror = () => reject(new Error('Network error'));
+          xhr.send(formData);
+        });
 
         setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'converting', progress: 0, jobId } : f));
 
@@ -495,7 +515,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                     <div style={{ width: '130px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem' }}>
                       {file.status === 'uploading' && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary-foreground)', fontWeight: 600 }}>
-                          <Loader2 size={18} className="animate-spin" /> Uploading
+                          <Loader2 size={18} className="animate-spin" /> {Math.round(file.progress)}%
                         </div>
                       )}
 

@@ -43,7 +43,7 @@ async function processQueue() {
         // For video, audio, document, archive: simulate heavy processing delay
         // In production, this is where FFmpeg/LibreOffice execution goes
         for (let i = 1; i <= 4; i++) {
-          await new Promise(res => setTimeout(res, 800)); // Simulate delay
+          await new Promise(res => setTimeout(res, 250)); // Fast simulated delay
           db.prepare('UPDATE jobs SET progress = ? WHERE id = ?').run(i * 20, job.id);
         }
         

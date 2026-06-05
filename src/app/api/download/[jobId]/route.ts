@@ -22,7 +22,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ jobId: s
     }
 
     const stat = fs.statSync(job.output_path);
-    const fileStream = fs.createReadStream(job.output_path);
+    // Use a large highWaterMark (1MB) to stream chunks much faster
+    const fileStream = fs.createReadStream(job.output_path, { highWaterMark: 1024 * 1024 });
     
     const ext = job.original_name.split('.').pop() || '';
     // Replace the last occurrence of the extension to ensure correct filename
