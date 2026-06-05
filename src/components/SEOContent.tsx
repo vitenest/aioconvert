@@ -71,13 +71,16 @@ export default function SEOContent({ about, features, faqs }: SEOContentProps) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {faqs.map((faq, i) => (
             <details key={i} style={{ 
-              backgroundColor: 'white', 
-              border: '1px solid var(--border)', 
-              borderRadius: '0.75rem', 
-              padding: '1rem' 
+              backgroundColor: '#f4f5f7', 
+              border: '1px solid rgba(0,0,0,0.05)', 
+              borderRadius: '1rem', 
+              padding: '1.25rem 1.5rem',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.03), 0 2px 4px -2px rgba(0,0,0,0.02)'
             }}>
-              <summary style={{ fontWeight: 600, cursor: 'pointer', outline: 'none', padding: '0.5rem 0' }}>{faq.q}</summary>
-              <p style={{ marginTop: '1rem', color: 'var(--secondary-foreground)', lineHeight: 1.6 }}>{faq.a}</p>
+              <summary style={{ fontWeight: 600, cursor: 'pointer', outline: 'none', color: '#1a1a1a', fontSize: '1.05rem' }}>
+                <span style={{ paddingLeft: '0.5rem' }}>{faq.q}</span>
+              </summary>
+              <p style={{ marginTop: '1rem', color: '#333333', lineHeight: 1.6, paddingLeft: '1.25rem' }}>{faq.a}</p>
             </details>
           ))}
         </div>

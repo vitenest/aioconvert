@@ -2,7 +2,7 @@ export function generateSeoContent(category: string, from?: string, to?: string)
   const cName = category.charAt(0).toUpperCase() + category.slice(1);
   
   // High-volume keywords integration
-  const toolName = from && to ? `${from.toUpperCase()} to ${to.toUpperCase()} Converter` : `${cName} Converter`;
+  const toolName = from && to ? `${from.toUpperCase()} to ${to.toUpperCase()} Converter` : (cName.toLowerCase().includes('converter') ? cName : `${cName} Converter`);
   
   const title = from && to 
     ? `Best ${from.toUpperCase()} to ${to.toUpperCase()} Converter Free Online | High Quality & Fast`
