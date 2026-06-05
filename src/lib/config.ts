@@ -12,7 +12,7 @@ export const FORMAT_MAPPINGS: Record<FileCategory, string[]> = {
   image: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'heif'],
   video: ['mp4', 'mkv', 'avi', 'mov', 'webm', 'wmv', 'flv'],
   audio: ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac'],
-  document: ['pdf', 'doc', 'docx', 'txt', 'rtf', 'odt', 'csv', 'xlsx'],
+  document: ['pdf', 'doc', 'docx', 'txt', 'rtf', 'odt', 'csv', 'xlsx', 'json', 'xml'],
   archive: ['zip', 'tar', 'rar', '7z', 'gz'],
 };
 

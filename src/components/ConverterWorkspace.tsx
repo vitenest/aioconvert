@@ -43,7 +43,7 @@ const getFileCategory = (file: File): FileCategory => {
   if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext || '')) return 'image';
   if (['mp4', 'mkv', 'avi', 'mov'].includes(ext || '')) return 'video';
   if (['mp3', 'wav', 'ogg'].includes(ext || '')) return 'audio';
-  if (['pdf', 'doc', 'docx', 'txt'].includes(ext || '')) return 'document';
+  if (['pdf', 'doc', 'docx', 'txt', 'json', 'xml', 'csv'].includes(ext || '')) return 'document';
   if (['zip', 'rar', '7z', 'tar'].includes(ext || '')) return 'archive';
   
   return 'unknown';
@@ -227,6 +227,14 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     removeFileState(id);
   };
 
+  const removeBulkGroup = (ext: string) => {
+    setBulkGroups(prev => prev.filter(g => g.ext !== ext));
+    if (bulkGroups.length <= 1) {
+      setShowBulkSetup(false);
+      setBulkGroups([]);
+    }
+  };
+
   const updateFormat = (id: string, format: string) => {
     setFiles(prev => {
       const updated = prev.map(f => f.id === id ? { ...f, targetFormat: format } : f);
@@ -366,6 +374,15 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                           <option key={f} value={f}>{f.toUpperCase()}</option>
                         ))}
                       </select>
+                      <button 
+                        onClick={() => removeBulkGroup(group.ext)}
+                        style={{ background: 'white', border: '1px solid var(--border)', cursor: 'pointer', color: 'var(--destructive-foreground)', padding: '0.6rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--destructive)'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                        title="Remove this group"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -420,9 +437,6 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 <button onClick={() => fileInputRef.current?.click()} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <FilePlus size={18} /> Select Files
                 </button>
-                <button onClick={() => folderInputRef.current?.click()} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <FolderInput size={18} /> Select Folder
-                </button>
               </div>
 
               <input 
@@ -430,16 +444,6 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 multiple 
                 ref={fileInputRef} 
                 onChange={handleFileSelect} 
-                style={{ display: 'none' }} 
-              />
-              <input 
-                type="file" 
-                multiple 
-                ref={folderInputRef} 
-                onChange={handleFileSelect} 
-                // @ts-ignore - webkitdirectory is non-standard but widely supported
-                webkitdirectory="true" 
-                directory="true"
                 style={{ display: 'none' }} 
               />
             </div>
@@ -456,9 +460,21 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                     </span>
                     Files Queued
                   </h3>
-                  <button onClick={handleConvert} className="btn btn-primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem 1.5rem' }}>
-                    <ArrowRightCircle size={20} /> Process All Files
-                  </button>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button 
+                      onClick={() => {
+                        files.forEach(f => removeFileState(f.id));
+                        setFiles([]);
+                      }} 
+                      className="btn btn-secondary" 
+                      style={{ padding: '0.75rem 1.25rem', color: 'var(--destructive-foreground)' }}
+                    >
+                      Clear All
+                    </button>
+                    <button onClick={handleConvert} className="btn btn-primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.75rem 1.5rem' }}>
+                      <ArrowRightCircle size={20} /> Process All Files
+                    </button>
+                  </div>
                 </div>
                 
                 <ResponsiveAd margin="1rem 0" />
