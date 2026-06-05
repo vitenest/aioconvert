@@ -54,12 +54,12 @@ export default function SEOContent({ about, features, faqs }: SEOContentProps) {
             const desc = parts.slice(1).join(': ');
             
             return (
-              <div key={i} className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid var(--border)' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }} />
+              <div key={i} style={{ backgroundColor: '#f4f5f7', borderRadius: '1rem', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid rgba(0,0,0,0.05)' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#1a1a1a' }} />
                 </div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--foreground)' }}>{title}</h3>
-                <p style={{ fontSize: '0.95rem', color: 'var(--secondary-foreground)', lineHeight: 1.5 }}>{desc}</p>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1a1a1a' }}>{title}</h3>
+                <p style={{ fontSize: '0.95rem', color: '#333333', lineHeight: 1.5 }}>{desc}</p>
               </div>
             );
           })}
