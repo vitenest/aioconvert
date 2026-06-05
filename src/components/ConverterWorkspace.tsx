@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import JSZip from 'jszip';
-import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, File as FileIcon, Trash2, ArrowRightCircle, CheckCircle2, Loader2, Settings, AlertCircle, FolderInput, FilePlus, Download } from 'lucide-react';
+import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, File as FileIcon, Trash2, ArrowRightCircle, CheckCircle2, Loader2, Settings, AlertCircle, FolderInput, FilePlus, Download, RefreshCw } from 'lucide-react';
 
 import { FORMAT_MAPPINGS } from '@/lib/config';
 import { saveFileState, getFileStates, removeFileState } from '@/lib/storage';
@@ -276,6 +276,76 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     setBulkGroups(prev => prev.map(g => g.ext === ext ? { ...g, targetFormat: format } : g));
   };
 
+  const processFile = async (fileItem: FileItem) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', fileItem.file);
+      formData.append('category', fileItem.category);
+      formData.append('targetFormat', fileItem.targetFormat);
+      formData.append('sessionId', getSessionId());
+
+      // Upload phase with progress tracking
+      const jobId = await new Promise<string>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/upload', true);
+        
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, progress } : f));
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const res = JSON.parse(xhr.responseText);
+              resolve(res.jobId);
+            } catch (e) {
+              reject(new Error('Invalid response'));
+            }
+          } else {
+            reject(new Error('Upload failed'));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error('Network error'));
+        xhr.send(formData);
+      });
+
+      setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'converting', progress: 0, jobId } : f));
+
+      // Polling phase
+      const pollStatus = async () => {
+        try {
+          const statusRes = await fetch(`/api/status/${jobId}`);
+          if (!statusRes.ok) throw new Error('Status check failed');
+          
+          const data = await statusRes.json();
+
+          if (data.status === 'done') {
+            setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'done', progress: 100, downloadUrl: data.downloadUrl } : f));
+          } else if (data.status === 'error') {
+            setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'error', progress: 0, errorMessage: data.error } : f));
+          } else {
+            // Still processing
+            setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, progress: data.progress } : f));
+            setTimeout(pollStatus, 500); // Poll again
+          }
+        } catch (err) {
+           console.error(err);
+           setTimeout(pollStatus, 1500); // Retry polling if network drops briefly
+        }
+      };
+
+      // Start polling
+      setTimeout(pollStatus, 500);
+
+    } catch (err: any) {
+      setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'error', errorMessage: err.message } : f));
+    }
+  };
+
   const handleConvert = async () => {
     // Start uploads for all idle files
     const idleFiles = files.filter(f => f.status === 'idle');
@@ -284,75 +354,20 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     setFiles(prev => prev.map(f => f.status === 'idle' ? { ...f, status: 'uploading', progress: 0 } : f));
     
     // Process uploads concurrently
-    idleFiles.forEach(async (fileItem) => {
-      try {
-        const formData = new FormData();
-        formData.append('file', fileItem.file);
-        formData.append('category', fileItem.category);
-        formData.append('targetFormat', fileItem.targetFormat);
-        formData.append('sessionId', getSessionId());
+    idleFiles.forEach(processFile);
 
-        // Upload phase with progress tracking
-        const jobId = await new Promise<string>((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/api/upload', true);
-          
-          xhr.upload.onprogress = (event) => {
-            if (event.lengthComputable) {
-              const progress = Math.round((event.loaded / event.total) * 100);
-              setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, progress } : f));
-            }
-          };
+    // Scroll to the files list
+    setTimeout(() => {
+      filesQueuedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
 
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              try {
-                const res = JSON.parse(xhr.responseText);
-                resolve(res.jobId);
-              } catch (e) {
-                reject(new Error('Invalid response'));
-              }
-            } else {
-              reject(new Error('Upload failed'));
-            }
-          };
+  const handleRetry = (id: string) => {
+    const fileToRetry = files.find(f => f.id === id);
+    if (!fileToRetry || fileToRetry.category === 'unknown') return;
 
-          xhr.onerror = () => reject(new Error('Network error'));
-          xhr.send(formData);
-        });
-
-        setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'converting', progress: 0, jobId } : f));
-
-        // Polling phase
-        const pollStatus = async () => {
-          try {
-            const statusRes = await fetch(`/api/status/${jobId}`);
-            if (!statusRes.ok) throw new Error('Status check failed');
-            
-            const data = await statusRes.json();
-
-            if (data.status === 'done') {
-              setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'done', progress: 100, downloadUrl: data.downloadUrl } : f));
-            } else if (data.status === 'error') {
-              setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'error', progress: 0, errorMessage: data.error } : f));
-            } else {
-              // Still processing
-              setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, progress: data.progress } : f));
-              setTimeout(pollStatus, 500); // Poll again
-            }
-          } catch (err) {
-             console.error(err);
-             setTimeout(pollStatus, 1500); // Retry polling if network drops briefly
-          }
-        };
-
-        // Start polling
-        setTimeout(pollStatus, 500);
-
-      } catch (err: any) {
-        setFiles(prev => prev.map(f => f.id === fileItem.id ? { ...f, status: 'error', errorMessage: err.message } : f));
-      }
-    });
+    setFiles(prev => prev.map(f => f.id === id ? { ...f, status: 'uploading', progress: 0, errorMessage: undefined } : f));
+    processFile(fileToRetry);
   };
 
   const handleDownloadZip = async () => {
@@ -632,8 +647,21 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                       )}
                       
                       {file.status === 'error' && (
-                        <div style={{ color: 'var(--destructive-foreground)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }} title={file.errorMessage}>
-                          <AlertCircle size={18} /> Error
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div style={{ color: 'var(--destructive-foreground)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }} title={file.errorMessage}>
+                            <AlertCircle size={18} /> Error
+                          </div>
+                          {file.category !== 'unknown' && (
+                            <button 
+                              onClick={() => handleRetry(file.id)}
+                              style={{ background: 'white', border: '1px solid var(--border)', cursor: 'pointer', color: 'var(--foreground)', padding: '0.5rem', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.05)'}
+                              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                              title="Retry"
+                            >
+                              <RefreshCw size={18} />
+                            </button>
+                          )}
                         </div>
                       )}
                       
