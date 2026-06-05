@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 
 import { Menu, X } from 'lucide-react';
@@ -8,6 +8,17 @@ import { Menu, X } from 'lucide-react';
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = (name: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveMenu(name);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setActiveMenu(null), 250);
+  };
 
   const menus = [
     { name: 'Image', path: '/image-converter', items: ['jpg-to-png', 'png-to-webp', 'heif-to-jpg'] },
@@ -39,16 +50,16 @@ export default function Header() {
           {menus.map((menu) => (
             <div 
               key={menu.name}
-              onMouseEnter={() => setActiveMenu(menu.name)}
-              onMouseLeave={() => setActiveMenu(null)}
-              style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%', cursor: 'pointer' }}
+              onMouseEnter={() => handleMouseEnter(menu.name)}
+              onMouseLeave={handleMouseLeave}
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%', cursor: 'pointer', padding: '0.5rem 0' }}
             >
               <Link href={menu.path} style={{ textDecoration: 'none', color: activeMenu === menu.name ? 'var(--foreground)' : 'var(--secondary-foreground)', fontWeight: 500, fontSize: '0.95rem', transition: 'color 0.2s ease', letterSpacing: '-0.01em' }}>
                 {menu.name}
               </Link>
               
               {activeMenu === menu.name && (
-                <div style={{ position: 'absolute', top: '100%', left: '50%', paddingTop: '1rem', zIndex: 10 }}>
+                <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', paddingTop: '0.5rem', zIndex: 10 }}>
                   <div className="animate-slide-down" style={{ 
                     backgroundColor: 'rgba(255, 255, 255, 0.95)', 
                     backdropFilter: 'blur(20px)',
