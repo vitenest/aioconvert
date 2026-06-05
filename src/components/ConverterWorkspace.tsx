@@ -520,14 +520,14 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                         
                     <div style={{ width: '130px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem' }}>
                       {file.status === 'uploading' && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary-foreground)', fontWeight: 600 }}>
-                          <Loader2 size={18} className="animate-spin" /> {Math.round(file.progress)}%
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary-foreground)', fontWeight: 600, fontSize: '0.9rem' }}>
+                          <Loader2 size={18} className="animate-spin" /> Uploading {Math.round(file.progress)}%
                         </div>
                       )}
 
                       {file.status === 'converting' && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600 }}>
-                          <Loader2 size={18} className="animate-spin" /> {Math.round(file.progress)}%
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+                          <Loader2 size={18} className="animate-spin" /> Converting...
                         </div>
                       )}
                       
@@ -577,6 +577,51 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                       <FilePlus size={20} /> Convert Another File
                     </button>
                     <ResponsiveAd margin="1rem 0" />
+
+                    <div style={{ 
+                      marginTop: '1rem', 
+                      padding: '2rem', 
+                      backgroundColor: 'rgba(0,0,0,0.02)', 
+                      border: '1px solid var(--border)', 
+                      borderRadius: '16px', 
+                      textAlign: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '1.25rem',
+                      maxWidth: '600px',
+                      width: '100%'
+                    }}>
+                      <div>
+                        <h4 style={{ color: 'var(--foreground)', fontWeight: 700, fontSize: '1.2rem', marginBottom: '0.5rem' }}>More Free Tools</h4>
+                        <p style={{ color: 'var(--secondary-foreground)', lineHeight: 1.6, fontSize: '0.95rem' }}>
+                          AIOConvert is part of the ViteNest ecosystem. Discover more premium free tools designed to boost your productivity.
+                        </p>
+                      </div>
+                      <a 
+                        href="https://vitenest.com/products" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        style={{ 
+                          display: 'inline-flex', 
+                          alignItems: 'center', 
+                          gap: '0.5rem', 
+                          padding: '0.75rem 1.5rem', 
+                          backgroundColor: 'rgba(0,0,0,0.04)', 
+                          border: '1px solid var(--border)',
+                          borderRadius: '12px', 
+                          color: 'var(--foreground)', 
+                          textDecoration: 'none', 
+                          fontWeight: 600, 
+                          fontSize: '1rem',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.08)'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.04)'}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>✨</span> Explore All ViteNest Tools
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
