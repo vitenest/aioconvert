@@ -79,6 +79,15 @@ body {
   animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes slideDownMobile {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down-mobile {
+  animation: slideDownMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Premium Buttons */
 .btn {
   display: inline-flex;
@@ -196,7 +205,6 @@ body {
   .header-container {
     border-radius: 16px !important;
     padding: 1rem !important;
-    justify-content: center !important;
   }
   .header-nav-mobile {
     display: flex;
@@ -204,6 +212,8 @@ body {
     justify-content: center;
     gap: 1rem !important;
   }
+  .workspace-section-padding { padding: 1rem !important; }
+  .workspace-panel-padding { padding: 1.25rem !important; }
 }
 
 .file-item-row {

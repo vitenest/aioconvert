@@ -322,10 +322,10 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
   };
 
   return (
-    <section id="convert" ref={dropzoneRef} style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+    <section id="convert" ref={dropzoneRef} className="workspace-section-padding" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%', padding: '2rem' }}>
       <div 
-        className="glass-panel" 
-        style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
+        className="glass-panel workspace-panel-padding" 
+        style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: '2.5rem' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>

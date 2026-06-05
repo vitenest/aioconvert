@@ -37,7 +37,7 @@ export default function SEOContent({ about, features, faqs }: SEOContentProps) {
   };
 
   return (
-    <section style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 2rem' }}>
+    <section className="workspace-section-padding" style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 2rem' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       <div style={{ marginBottom: '3rem' }}>

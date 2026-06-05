@@ -141,7 +141,7 @@ export default function Header() {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="header-mobile-menu animate-slide-down" style={{
+        <div className="header-mobile-menu animate-slide-down-mobile" style={{
           position: 'absolute',
           top: 'calc(100% + 1rem)',
           left: '1rem',
