@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
-import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, File as FileIcon, Trash2, ArrowRightCircle, CheckCircle2, Loader2, Settings, AlertCircle, FolderInput, FilePlus } from 'lucide-react';
+import JSZip from 'jszip';
+import { UploadCloud, FileImage, FileVideo, FileAudio, FileText, FileArchive, File as FileIcon, Trash2, ArrowRightCircle, CheckCircle2, Loader2, Settings, AlertCircle, FolderInput, FilePlus, Download } from 'lucide-react';
 
 import { FORMAT_MAPPINGS } from '@/lib/config';
 import { saveFileState, getFileStates, removeFileState } from '@/lib/storage';
@@ -74,6 +75,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
   // Bulk Setup State
   const [bulkGroups, setBulkGroups] = useState<BulkGroup[]>([]);
   const [showBulkSetup, setShowBulkSetup] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
 
   React.useEffect(() => {
     const sessionId = getSessionId();
@@ -353,6 +355,45 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
     });
   };
 
+  const handleDownloadZip = async () => {
+    const doneFiles = files.filter(f => f.status === 'done' && f.downloadUrl);
+    if (doneFiles.length === 0) return;
+    
+    setIsZipping(true);
+    try {
+      const zip = new JSZip();
+      
+      await Promise.all(doneFiles.map(async (f) => {
+        const res = await fetch(f.downloadUrl!);
+        const blob = await res.blob();
+        
+        let path = f.file.webkitRelativePath || f.file.name;
+        const lastDot = path.lastIndexOf('.');
+        if (lastDot !== -1) {
+          path = path.substring(0, lastDot) + '.' + f.targetFormat;
+        } else {
+          path += '.' + f.targetFormat;
+        }
+        zip.file(path, blob);
+      }));
+      
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `converted_files_${Date.now()}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to zip files", err);
+      alert("Failed to create ZIP file. You can still download files individually.");
+    } finally {
+      setIsZipping(false);
+    }
+  };
+
   return (
     <section id="convert" ref={dropzoneRef} className="workspace-section-padding" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%', padding: '2rem' }}>
       <div 
@@ -615,20 +656,34 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 {/* Ad when download buttons appear */}
                 {files.some(f => f.status === 'done') && (
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', gap: '1rem' }}>
-                    <button 
-                      onClick={() => {
-                        const sessionId = getSessionId();
-                        removeFileState(sessionId);
-                        setFiles([]);
-                        setTimeout(() => {
-                          dropzoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 50);
-                      }}
-                      className="btn btn-secondary" 
-                      style={{ padding: '0.8rem 2.5rem', fontSize: '1.05rem', fontWeight: 600, display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: 'var(--foreground)', color: 'var(--background)' }}
-                    >
-                      <FilePlus size={20} /> Convert Another File
-                    </button>
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                      {files.filter(f => f.status === 'done').length > 1 && (
+                        <button 
+                          onClick={handleDownloadZip}
+                          disabled={isZipping}
+                          className="btn btn-primary" 
+                          style={{ padding: '0.8rem 2.5rem', fontSize: '1.05rem', fontWeight: 600, display: 'flex', gap: '0.5rem', alignItems: 'center' }}
+                        >
+                          {isZipping ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
+                          {isZipping ? 'Zipping Files...' : 'Download All as ZIP'}
+                        </button>
+                      )}
+                      
+                      <button 
+                        onClick={() => {
+                          const sessionId = getSessionId();
+                          removeFileState(sessionId);
+                          setFiles([]);
+                          setTimeout(() => {
+                            dropzoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 50);
+                        }}
+                        className="btn btn-secondary" 
+                        style={{ padding: '0.8rem 2.5rem', fontSize: '1.05rem', fontWeight: 600, display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: 'var(--foreground)', color: 'var(--background)' }}
+                      >
+                        <FilePlus size={20} /> Convert Another File
+                      </button>
+                    </div>
                     <ResponsiveAd margin="1rem 0" />
 
                     <div style={{ 
