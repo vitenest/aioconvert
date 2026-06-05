@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Empty config since instrumentationHook is now stable in this Next.js version
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Link',
+            value: '</.well-known/api-catalog>; rel="api-catalog", </.well-known/mcp/server-card.json>; rel="mcp-server", </.well-known/agent-skills/index.json>; rel="agent-skills"'
+          }
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
