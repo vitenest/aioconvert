@@ -18,8 +18,8 @@ export default function LiveStats() {
   }, []);
 
   return (
-    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-      <span style={{ fontSize: '1.2rem' }}>🚀</span> {users.toLocaleString()}+ users served in the last 30 days
+    <span className="live-stats-text" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <span className="live-stats-icon">🚀</span> {users.toLocaleString()}+ users served in the last 30 days
     </span>
   );
 }
