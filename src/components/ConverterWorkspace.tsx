@@ -148,17 +148,35 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
 
     // Filter out hidden files like .DS_Store
     const validFiles = newFiles.filter(f => !f.name.startsWith('.'));
-
-    // Group files by extension
-    const groupsMap = new Map<string, File[]>();
+    
+    const supportedFiles: File[] = [];
+    const unsupportedFiles: File[] = [];
+    
     validFiles.forEach(file => {
+      const category = getFileCategory(file);
+      const availableFormats = category !== 'unknown' ? FORMAT_MAPPINGS[category] : [];
+      if (category === 'unknown' || availableFormats.length === 0) {
+        unsupportedFiles.push(file);
+      } else {
+        supportedFiles.push(file);
+      }
+    });
+
+    // Group supported files by extension
+    const groupsMap = new Map<string, File[]>();
+    supportedFiles.forEach(file => {
       const ext = (file.name.split('.').pop() || 'unknown').toLowerCase();
       if (!groupsMap.has(ext)) groupsMap.set(ext, []);
       groupsMap.get(ext)!.push(file);
     });
 
-    // If it's a bulk upload with multiple extensions, show bulk setup
-    if (groupsMap.size > 1 && validFiles.length > 1) {
+    // Immediately queue unsupported files to show error state
+    if (unsupportedFiles.length > 0) {
+      addFilesToQueue(unsupportedFiles);
+    }
+
+    // If it's a bulk upload with multiple supported extensions, show bulk setup
+    if (groupsMap.size > 1 && supportedFiles.length > 1) {
       const newBulkGroups: BulkGroup[] = Array.from(groupsMap.entries()).map(([ext, groupFiles]) => {
         const category = getFileCategory(groupFiles[0]);
         const availableFormats = category !== 'unknown' ? FORMAT_MAPPINGS[category] : [];
@@ -171,11 +189,11 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         return { ext, category, files: groupFiles, targetFormat };
       });
 
-      setBulkGroups(newBulkGroups);
+      setBulkGroups(prev => [...prev, ...newBulkGroups]);
       setShowBulkSetup(true);
-    } else {
+    } else if (supportedFiles.length > 0) {
       // Direct add
-      addFilesToQueue(validFiles);
+      addFilesToQueue(supportedFiles);
     }
   };
 
@@ -193,16 +211,22 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
         targetFormat = initialToFormat;
       }
       
+      const isUnsupported = category === 'unknown' || availableFormats.length === 0;
+
       const id = Math.random().toString(36).substring(7);
-      saveFileState(id, file, category, targetFormat);
+      
+      if (!isUnsupported) {
+        saveFileState(id, file, category, targetFormat);
+      }
       
       return {
         id,
         file,
         category,
-        targetFormat,
-        status: 'idle',
-        progress: 0
+        targetFormat: isUnsupported ? '' : targetFormat,
+        status: isUnsupported ? 'error' : 'idle',
+        progress: 0,
+        errorMessage: isUnsupported ? 'Cannot convert this file' : undefined
       };
     });
     setFiles(prev => [...prev, ...newItems]);
