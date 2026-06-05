@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import ResponsiveAd from './ResponsiveAd';
-import LiveStats from './LiveStats';
+
 
 export default function Footer() {
   return (
@@ -16,7 +16,7 @@ export default function Footer() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--foreground)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: '1.1rem' }}>A</div>
-            <span style={{ color: 'var(--foreground)', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '-0.03em' }}>AIOConvert</span>
+            <span style={{ background: 'linear-gradient(90deg, #2563eb, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>AIOConverter</span>
           </div>
           <p style={{ color: 'var(--secondary-foreground)', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '300px' }}>
             The ultimate free online file converter. Seamlessly transform your documents, images, audio, video, and archives into any format with lightning speed and absolute privacy.
@@ -70,10 +70,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2rem' }}>
-        <LiveStats />
-      </div>
-      
+
       <ResponsiveAd margin="2rem auto" />
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', borderTop: '1px solid var(--border)', paddingTop: '2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>

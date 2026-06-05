@@ -44,7 +44,7 @@ export default function Header() {
           }}>
             A
           </div>
-          <Link href="/" style={{ textDecoration: 'none', color: 'var(--foreground)', fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.03em' }}>
+          <Link href="/" style={{ textDecoration: 'none', background: 'linear-gradient(90deg, #2563eb, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
             AIOConverter
           </Link>
         </div>

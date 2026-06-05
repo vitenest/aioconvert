@@ -31,6 +31,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         
       </div>
       
+      <div style={{ maxWidth: '1200px', margin: '4rem auto 0', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', fontWeight: 600, color: 'var(--foreground)', marginBottom: '2rem' }}>
+        <LiveStats />
+      </div>
+      
       <Footer />
     </>
   );
