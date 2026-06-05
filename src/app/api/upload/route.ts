@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
+import '@/lib/worker'; // Ensure worker is initialized
 
 const UPLOAD_DIR = path.join(process.cwd(), '.tmp', 'uploads');
 const DOWNLOAD_DIR = path.join(process.cwd(), '.tmp', 'downloads');

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
+import '@/lib/worker'; // Ensure worker is initialized
 
 export async function GET(req: Request, { params }: { params: Promise<{ jobId: string }> }) {
   try {

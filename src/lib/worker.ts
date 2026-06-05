@@ -8,7 +8,7 @@ const DOWNLOAD_DIR = path.join(process.cwd(), '.tmp', 'downloads');
 // Worker Loop
 async function processQueue() {
   try {
-    const job = db.prepare('SELECT * FROM jobs WHERE status = "pending" ORDER BY created_at ASC LIMIT 1').get() as {
+    const job = db.prepare("SELECT * FROM jobs WHERE status = 'pending' ORDER BY created_at ASC LIMIT 1").get() as {
       id: string;
       category: string;
       input_path: string;
@@ -21,7 +21,7 @@ async function processQueue() {
       return;
     }
 
-    db.prepare('UPDATE jobs SET status = "processing", progress = 5 WHERE id = ?').run(job.id);
+    db.prepare("UPDATE jobs SET status = 'processing', progress = 5 WHERE id = ?").run(job.id);
 
     const safeName = job.original_name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
     const ext = safeName.split('.').pop() || '';
@@ -37,7 +37,7 @@ async function processQueue() {
           .toFormat(job.target_format as keyof sharp.FormatEnum, { quality: 90 })
           .toFile(outputPath);
           
-        db.prepare('UPDATE jobs SET status = "done", progress = 100, output_path = ?, completed_at = ? WHERE id = ?')
+        db.prepare("UPDATE jobs SET status = 'done', progress = 100, output_path = ?, completed_at = ? WHERE id = ?")
           .run(outputPath, Date.now(), job.id);
       } else {
         // For video, audio, document, archive: simulate heavy processing delay
@@ -50,12 +50,12 @@ async function processQueue() {
         // Mock output by copying input file so the download succeeds
         fs.copyFileSync(job.input_path, outputPath);
 
-        db.prepare('UPDATE jobs SET status = "done", progress = 100, output_path = ?, completed_at = ? WHERE id = ?')
+        db.prepare("UPDATE jobs SET status = 'done', progress = 100, output_path = ?, completed_at = ? WHERE id = ?")
           .run(outputPath, Date.now(), job.id);
       }
     } catch (conversionErr: any) {
       console.error(`Job ${job.id} failed:`, conversionErr);
-      db.prepare('UPDATE jobs SET status = "error", error_message = ? WHERE id = ?').run(conversionErr.message, job.id);
+      db.prepare("UPDATE jobs SET status = 'error', error_message = ? WHERE id = ?").run(conversionErr.message, job.id);
     }
 
   } catch (err) {
