@@ -101,6 +101,31 @@ export default function Header() {
               )}
             </div>
           ))}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%' }}>
+            <a 
+              href="https://vitenest.com/products" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                textDecoration: 'none', 
+                color: 'var(--primary)', 
+                fontWeight: 600, 
+                fontSize: '0.90rem', 
+                padding: '0.4rem 0.8rem', 
+                borderRadius: '12px', 
+                backgroundColor: 'rgba(0,0,0,0.04)', 
+                border: '1px solid var(--border)',
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.4rem', 
+                transition: 'all 0.2s ease' 
+              }} 
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.08)'} 
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.04)'}
+            >
+              <span style={{ fontSize: '1rem' }}>✨</span> Explore ViteNest Tools
+            </a>
+          </div>
         </nav>
         
         <div className="header-nav-desktop">
@@ -170,6 +195,31 @@ export default function Header() {
               </div>
             </div>
           ))}
+          
+          <a 
+            href="https://vitenest.com/products" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{ 
+              textDecoration: 'none', 
+              color: 'var(--primary)', 
+              fontWeight: 600, 
+              fontSize: '1rem', 
+              padding: '0.8rem', 
+              backgroundColor: 'rgba(0,0,0,0.04)', 
+              border: '1px solid var(--border)',
+              borderRadius: '12px', 
+              marginTop: '0.5rem', 
+              textAlign: 'center', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '0.5rem' 
+            }}
+          >
+            <span style={{ fontSize: '1.2rem' }}>✨</span> Explore ViteNest Tools
+          </a>
           
           <Link 
             href="/#convert" 

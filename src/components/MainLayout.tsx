@@ -2,6 +2,7 @@ import React from 'react';
 import AdBanner from './AdBanner';
 import ResponsiveAd from './ResponsiveAd';
 import LiveStats from './LiveStats';
+import Footer from './Footer';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,19 +31,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         
       </div>
       
-      <footer style={{ padding: '3rem 2rem', textAlign: 'center', color: 'var(--secondary-foreground)', fontSize: '0.875rem' }}>
-        <ResponsiveAd margin="0 0 2rem" />
-        
-        <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', fontWeight: 600, color: 'var(--foreground)' }}>
-          <LiveStats />
-        </div>
-        
-        <ResponsiveAd margin="2rem 0" />
-
-        <p style={{ marginTop: '2rem' }}>
-          &copy; {new Date().getFullYear()} AIOConvert.com - A <a href="https://vitenest.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>ViteNest</a> Product &middot; Developed by <a href="https://viterank.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>ViteRank</a>
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }
