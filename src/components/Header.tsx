@@ -30,21 +30,7 @@ export default function Header() {
         flexWrap: 'wrap'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ 
-            width: '28px', 
-            height: '28px', 
-            borderRadius: '50%', 
-            background: 'var(--foreground)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontWeight: 800,
-            fontSize: '1rem'
-          }}>
-            A
-          </div>
-          <Link href="/" style={{ textDecoration: 'none', background: 'linear-gradient(90deg, #2563eb, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
+          <Link href="/" style={{ textDecoration: 'none', background: 'linear-gradient(90deg, #020617, #334155)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.04em' }}>
             AIOConverter
           </Link>
         </div>

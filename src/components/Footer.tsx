@@ -15,8 +15,7 @@ export default function Footer() {
         {/* Brand & Description */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--foreground)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: '1.1rem' }}>A</div>
-            <span style={{ background: 'linear-gradient(90deg, #2563eb, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>AIOConverter</span>
+            <span style={{ background: 'linear-gradient(90deg, #020617, #334155)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.04em' }}>AIOConverter</span>
           </div>
           <p style={{ color: 'var(--secondary-foreground)', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '300px' }}>
             The ultimate free online file converter. Seamlessly transform your documents, images, audio, video, and archives into any format with lightning speed and absolute privacy.
