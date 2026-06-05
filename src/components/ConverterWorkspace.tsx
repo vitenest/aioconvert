@@ -105,6 +105,18 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
+  const dropzoneRef = useRef<HTMLElement>(null);
+  const filesQueuedRef = useRef<HTMLDivElement>(null);
+
+  const prevFilesLength = useRef(0);
+  React.useEffect(() => {
+    if (prevFilesLength.current === 0 && files.length > 0) {
+      setTimeout(() => {
+        filesQueuedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+    prevFilesLength.current = files.length;
+  }, [files.length]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -310,7 +322,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
   };
 
   return (
-    <section id="convert" style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+    <section id="convert" ref={dropzoneRef} style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
       <div 
         className="glass-panel" 
         style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
@@ -434,7 +446,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
 
             {/* Advanced File List */}
             {files.length > 0 && (
-              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div ref={filesQueuedRef} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <ResponsiveAd margin="1rem 0" />
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
@@ -555,6 +567,9 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                         const sessionId = getSessionId();
                         removeFileState(sessionId);
                         setFiles([]);
+                        setTimeout(() => {
+                          dropzoneRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 50);
                       }}
                       className="btn btn-secondary" 
                       style={{ padding: '0.8rem 2.5rem', fontSize: '1.05rem', fontWeight: 600, display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: 'var(--foreground)', color: 'var(--background)' }}
