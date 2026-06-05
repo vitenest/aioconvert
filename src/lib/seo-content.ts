@@ -21,7 +21,8 @@ export function generateSeoContent(category: string, from?: string, to?: string)
     `Lightning Fast Conversions: Convert your ${from ? from.toUpperCase() : 'files'} to ${to ? to.toUpperCase() : 'desired formats'} in mere seconds.`,
     `100% Free & Secure: Bank-grade encryption ensures your data is protected. No hidden fees.`,
     `Auto-Deletion Privacy: All uploaded and converted files are permanently erased after 30 minutes.`,
-    `Cross-Platform & Mobile Friendly: Use our converter on Windows, Mac, Linux, iOS, or Android.`
+    `Cross-Platform & Mobile Friendly: Use our converter on Windows, Mac, Linux, iOS, or Android.`,
+    `No Installation Required: Everything happens entirely within your browser. No extra software or extensions needed.`
   ];
 
   const faqs = [

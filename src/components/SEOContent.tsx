@@ -48,12 +48,21 @@ export default function SEOContent({ about, features, faqs }: SEOContentProps) {
       <div style={{ marginBottom: '3rem' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--foreground)' }}>Key Features</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-          {features.map((feature, i) => (
-            <div key={i} className="glass-panel" style={{ padding: '1.5rem' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)', marginBottom: '1rem' }} />
-              <p style={{ fontWeight: 500 }}>{feature}</p>
-            </div>
-          ))}
+          {features.map((feature, i) => {
+            const parts = feature.split(': ');
+            const title = parts[0];
+            const desc = parts.slice(1).join(': ');
+            
+            return (
+              <div key={i} className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid var(--border)' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }} />
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--foreground)' }}>{title}</h3>
+                <p style={{ fontSize: '0.95rem', color: 'var(--secondary-foreground)', lineHeight: 1.5 }}>{desc}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
