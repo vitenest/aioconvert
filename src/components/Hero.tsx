@@ -40,12 +40,9 @@ export default function Hero() {
         Seamlessly transform your documents, images, audio, video, and archives into any format. Lightning-fast processing with absolute privacy.
       </p>
       
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
         <Link href="#convert" className="btn btn-primary" style={{ padding: '0.85rem 2.5rem', fontSize: '1.05rem', textDecoration: 'none' }}>
           Start Converting
-        </Link>
-        <Link href="#features" className="btn btn-secondary" style={{ padding: '0.85rem 2.5rem', fontSize: '1.05rem', textDecoration: 'none' }}>
-          Explore Formats
         </Link>
       </div>
 
