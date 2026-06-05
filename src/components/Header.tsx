@@ -155,7 +155,7 @@ export default function Header() {
           display: 'flex',
           flexDirection: 'column',
           gap: '0.5rem',
-          maxHeight: '70vh',
+          maxHeight: '85vh',
           overflowY: 'auto'
         }}>
           {menus.map((menu) => (
