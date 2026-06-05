@@ -457,7 +457,7 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                 <p style={{ color: 'var(--secondary-foreground)', fontSize: '0.95rem' }}>Drag and drop anywhere, or use the buttons below</p>
               </div>
               
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <button onClick={() => fileInputRef.current?.click()} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <FilePlus size={18} /> Select Files
                 </button>
