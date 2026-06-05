@@ -6,15 +6,15 @@ export default function LiveStats() {
   const [users, setUsers] = useState(114293); // Start with a believable base number
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate live activity by randomly increasing the number
-      // Check every 2 seconds, 40% chance to increase by 1 to 3 users
-      if (Math.random() > 0.6) {
-        setUsers(prev => prev + Math.floor(Math.random() * 3) + 1);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
+    // Calculate a static number based on the current time so it increments
+    // between visits but remains stable while the user is on the page.
+    // Base is 114,293 users. We simulate ~20 new users per hour since June 1, 2024.
+    const baseDate = new Date('2024-06-01T00:00:00Z').getTime();
+    const now = Date.now();
+    const diffHours = Math.max(0, (now - baseDate) / (1000 * 60 * 60));
+    
+    const calculatedUsers = 114293 + Math.floor(diffHours * 20);
+    setUsers(calculatedUsers);
   }, []);
 
   return (
