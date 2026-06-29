@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export type AdType = 'native' | '468x60' | '300x250' | '160x600' | '160x300' | '320x50' | '728x90';
 
 export default function AdBanner({ type, className = '' }: { type: AdType, className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const getAdId = () => {
     switch (type) {
@@ -32,8 +33,27 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
       script.setAttribute('data-cfasync', 'false');
       script.src = `https://pl29637924.effectivecpmnetwork.com/${adId}/invoke.js`;
       containerRef.current.appendChild(script);
+
+      // Observe when adsterra injects the native ad
+      const observer = new MutationObserver(() => {
+        if (containerRef.current && containerRef.current.innerHTML.length > 50) {
+          setIsLoaded(true);
+          observer.disconnect();
+        }
+      });
+      observer.observe(containerRef.current, { childList: true, subtree: true });
     }
   }, [adId, isDummy, type]);
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === 'ad_loaded' && e.data?.id === adId) {
+        setIsLoaded(true);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [adId]);
 
   const getDimensions = () => {
     if (type === 'native') return { width: '100%', height: 'auto', minHeight: '250px' };
@@ -59,17 +79,34 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
       };
     </script>
     <script type="text/javascript" src="https://www.highperformanceformat.com/${id}/invoke.js"></script>
+    <script>
+      let checkCount = 0;
+      const interval = setInterval(() => {
+        if (document.body.innerHTML.includes('iframe') || document.body.innerHTML.includes('img') || document.body.innerHTML.includes('href')) {
+          window.parent.postMessage({ type: 'ad_loaded', id: '${id}' }, '*');
+          clearInterval(interval);
+        }
+        checkCount++;
+        if (checkCount > 20) clearInterval(interval); // Stop checking after 10 seconds
+      }, 500);
+    </script>
   </body>
 </html>`;
+
+  const showAd = isDummy || isLoaded;
 
   return (
     <div className={`ad-container ${className}`} style={{
       display: 'flex',
       justifyContent: 'center',
-      margin: '1.5rem auto',
+      margin: showAd ? '1.5rem auto' : '0 auto',
       width: '100%',
       maxWidth: type === 'native' ? '1000px' : dimensions.width,
-      overflow: 'hidden'
+      height: showAd ? (type === 'native' ? 'auto' : dimensions.height) : '0px',
+      minHeight: showAd ? dimensions.minHeight : '0px',
+      overflow: 'hidden',
+      transition: 'height 0.4s ease, min-height 0.4s ease, margin 0.4s ease',
+      opacity: showAd ? 1 : 0
     }}>
       {isDummy ? (
         <div style={{
@@ -97,7 +134,6 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
           id={`container-${adId}`} 
           style={{ 
             minWidth: '100%', 
-            minHeight: dimensions.minHeight,
             display: 'flex',
             justifyContent: 'center'
           }} 
@@ -113,7 +149,7 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
             display: 'block', 
             margin: '0 auto', 
             minWidth: dimensions.width, 
-            minHeight: dimensions.minHeight 
+            minHeight: dimensions.height 
           }} 
         />
       )}
