@@ -99,6 +99,24 @@ export default function Header() {
             </div>
           ))}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%' }}>
+            <Link 
+              href="/blog" 
+              style={{ 
+                textDecoration: 'none', 
+                color: 'var(--secondary-foreground)', 
+                fontWeight: 500, 
+                fontSize: '0.95rem', 
+                transition: 'color 0.2s ease', 
+                letterSpacing: '-0.01em',
+                padding: '0.5rem 0'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.color = 'var(--foreground)'}
+              onMouseOut={(e) => e.currentTarget.style.color = 'var(--secondary-foreground)'}
+            >
+              Blog
+            </Link>
+          </div>
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%' }}>
             <a 
               href="https://vitenest.com/products" 
               target="_blank" 
@@ -192,6 +210,27 @@ export default function Header() {
               </div>
             </div>
           ))}
+          <Link 
+            href="/blog" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{ 
+              textDecoration: 'none', 
+              color: 'var(--foreground)', 
+              fontWeight: 600, 
+              fontSize: '1.1rem', 
+              padding: '0.8rem', 
+              backgroundColor: 'rgba(0,0,0,0.02)', 
+              border: '1px solid var(--border)',
+              borderRadius: '12px', 
+              marginTop: '0.5rem', 
+              textAlign: 'center', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}
+          >
+            Blog
+          </Link>
           
           <a 
             href="https://vitenest.com/products" 

@@ -2,14 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import ResponsiveAd from './ResponsiveAd';
-
 
 export default function Footer() {
   return (
     <footer style={{ padding: '4rem 2rem 2rem', color: '#e5e7eb', fontSize: '0.9rem', backgroundColor: '#000000', borderTop: '1px solid #1f2937', marginTop: '4rem' }}>
-      <ResponsiveAd margin="0 auto 3rem" />
-      
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', textAlign: 'left', marginBottom: '3rem' }}>
         
         {/* Brand & Description */}
@@ -67,10 +63,19 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
+        {/* Company */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <h4 style={{ color: '#ffffff', fontWeight: 600, fontSize: '1.1rem' }}>Company</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <Link href="/about" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>About Us</Link>
+            <Link href="/blog" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Blog</Link>
+            <Link href="/contact" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Contact</Link>
+            <Link href="/privacy-policy" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Privacy Policy</Link>
+            <Link href="/terms" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Terms of Service</Link>
+          </div>
+        </div>
       </div>
-
-
-      <ResponsiveAd margin="2rem auto" />
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', borderTop: '1px solid #1f2937', paddingTop: '2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
         <p>

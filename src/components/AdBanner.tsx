@@ -24,34 +24,14 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
   const isDummy = !adId || adId.includes('dummy');
 
   useEffect(() => {
-    if (!isDummy && containerRef.current && !containerRef.current.hasChildNodes()) {
-      if (type === 'native') {
-        // Native Banner Injection
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.async = true;
-        script.setAttribute('data-cfasync', 'false');
-        script.src = `https://pl29637924.effectivecpmnetwork.com/${adId}/invoke.js`;
-        containerRef.current.appendChild(script);
-      } else {
-        // Standard Banner Injection
-        const [wStr, hStr] = type.split('x');
-        const conf = document.createElement('script');
-        conf.type = 'text/javascript';
-        conf.innerHTML = `atOptions = {
-          'key' : '${adId}',
-          'format' : 'iframe',
-          'height' : ${parseInt(hStr, 10)},
-          'width' : ${parseInt(wStr, 10)},
-          'params' : {}
-        };`;
-        containerRef.current.appendChild(conf);
-
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = `https://www.highperformanceformat.com/${adId}/invoke.js`;
-        containerRef.current.appendChild(script);
-      }
+    if (!isDummy && type === 'native' && containerRef.current && !containerRef.current.hasChildNodes()) {
+      // Native Banner Injection
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.setAttribute('data-cfasync', 'false');
+      script.src = `https://pl29637924.effectivecpmnetwork.com/${adId}/invoke.js`;
+      containerRef.current.appendChild(script);
     }
   }, [adId, isDummy, type]);
 
@@ -62,6 +42,25 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
   };
 
   const dimensions = getDimensions();
+
+  const getIframeSrcDoc = (w: string, h: string, id: string) => `<!DOCTYPE html>
+<html>
+  <head>
+    <style>body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }</style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '${id}',
+        'format' : 'iframe',
+        'height' : ${parseInt(h, 10)},
+        'width' : ${parseInt(w, 10)},
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/${id}/invoke.js"></script>
+  </body>
+</html>`;
 
   return (
     <div className={`ad-container ${className}`} style={{
@@ -92,15 +91,29 @@ export default function AdBanner({ type, className = '' }: { type: AdType, class
         }}>
           Ad Placeholder: {type}
         </div>
-      ) : (
+      ) : type === 'native' ? (
         <div 
           ref={containerRef} 
           id={`container-${adId}`} 
           style={{ 
-            minWidth: type === 'native' ? '100%' : dimensions.width, 
+            minWidth: '100%', 
             minHeight: dimensions.minHeight,
             display: 'flex',
             justifyContent: 'center'
+          }} 
+        />
+      ) : (
+        <iframe
+          srcDoc={getIframeSrcDoc(dimensions.width, dimensions.height, adId)}
+          width={parseInt(dimensions.width, 10)}
+          height={parseInt(dimensions.height, 10)}
+          frameBorder="0"
+          scrolling="no"
+          style={{ 
+            display: 'block', 
+            margin: '0 auto', 
+            minWidth: dimensions.width, 
+            minHeight: dimensions.minHeight 
           }} 
         />
       )}

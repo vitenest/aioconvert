@@ -25,7 +25,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         {/* Right Skyscraper */}
         <div className="ad-skyscraper-right" style={{ width: '160px', flexShrink: 0, marginTop: '2rem' }}>
           <div style={{ position: 'sticky', top: '2rem' }}>
-            <AdBanner type="160x300" />
+            <AdBanner type="160x600" />
           </div>
         </div>
         

@@ -21,12 +21,17 @@ export default function Home() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <AdBanner type="728x90" className="ad-desktop" />
           <AdBanner type="468x60" className="ad-tablet" />
-          <AdBanner type="300x250" className="ad-mobile" />
+          <AdBanner type="320x50" className="ad-mobile" />
         </div>
 
         <MainLayout>
           <ConverterWorkspace />
           
+          {/* Mobile Ad Below Converter */}
+          <div style={{ margin: '1.5rem 0' }}>
+            <AdBanner type="300x250" className="ad-mobile" />
+          </div>
+
           {/* High CTR Native Feed Below Converter */}
           <div style={{ margin: '3rem 0' }}>
             <AdBanner type="native" />
