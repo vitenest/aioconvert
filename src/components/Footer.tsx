@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer style={{ padding: '4rem 2rem 2rem', color: '#e5e7eb', fontSize: '0.9rem', backgroundColor: '#000000', borderTop: '1px solid #1f2937', marginTop: '4rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', textAlign: 'left', marginBottom: '3rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'left', marginBottom: '3rem' }}>
         
         {/* Brand & Description */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
