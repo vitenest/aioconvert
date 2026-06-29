@@ -29,6 +29,18 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Company */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <h4 style={{ color: '#ffffff', fontWeight: 600, fontSize: '1.1rem' }}>Company</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <Link href="/about" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>About Us</Link>
+            <Link href="/blog" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Blog</Link>
+            <Link href="/contact" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Contact</Link>
+            <Link href="/privacy-policy" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Privacy Policy</Link>
+            <Link href="/terms" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Terms of Service</Link>
+          </div>
+        </div>
+
         {/* ViteNest Branding */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <h4 style={{ color: '#ffffff', fontWeight: 600, fontSize: '1.1rem' }}>More Free Tools</h4>
@@ -61,18 +73,6 @@ export default function Footer() {
               Explore All ViteNest Tools
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7, marginLeft: '2px', marginBottom: '2px' }}><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
             </a>
-          </div>
-        </div>
-
-        {/* Company */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <h4 style={{ color: '#ffffff', fontWeight: 600, fontSize: '1.1rem' }}>Company</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            <Link href="/about" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>About Us</Link>
-            <Link href="/blog" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Blog</Link>
-            <Link href="/contact" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Contact</Link>
-            <Link href="/privacy-policy" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Privacy Policy</Link>
-            <Link href="/terms" style={{ textDecoration: 'none', color: '#9ca3af', transition: 'color 0.2s ease', fontWeight: 500 }} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#9ca3af'}>Terms of Service</Link>
           </div>
         </div>
       </div>
