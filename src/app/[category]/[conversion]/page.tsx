@@ -59,17 +59,33 @@ export default async function ConversionPage({ params }: { params: Promise<{ cat
             {seo.description}
           </p>
         </section>
+
+        {/* Top Header Ads - Responsive */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="468x60" className="ad-tablet" />
+          <AdBanner type="320x50" className="ad-mobile" />
+        </div>
+
         <MainLayout>
-          <ResponsiveAd margin="1rem 0" />
+          <ConverterWorkspace initialCategory={categoryType} initialFromFormat={from} initialToFormat={to} />
           
-          {/* Pass props to pre-configure the workspace. */}
-          <div style={{ marginTop: '1rem' }}>
-            <ConverterWorkspace initialCategory={categoryType} initialFromFormat={from} initialToFormat={to} />
+          {/* Mobile Ad Below Converter */}
+          <div style={{ margin: '1.5rem 0' }}>
+            <AdBanner type="300x250" className="ad-mobile" />
+          </div>
+
+          {/* High CTR Native Feed Below Converter */}
+          <div style={{ margin: '3rem 0' }}>
+            <AdBanner type="native" />
           </div>
           
-          <AdBanner type="native" />
-          
           <SEOContent about={seo.about} features={seo.features} faqs={seo.faqs} />
+          
+          {/* Medium Rectangle near bottom content */}
+          <div style={{ margin: '3rem 0', display: 'flex', justifyContent: 'center' }}>
+            <AdBanner type="300x250" />
+          </div>
         </MainLayout>
       </main>
     </>
