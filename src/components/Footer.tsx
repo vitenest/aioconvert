@@ -8,15 +8,15 @@ export default function Footer() {
     <footer style={{ padding: '4rem 2rem 2rem', color: '#e5e7eb', fontSize: '0.9rem', backgroundColor: '#000000', borderTop: '1px solid #1f2937', marginTop: '4rem' }}>
       <style dangerouslySetInnerHTML={{__html: `
         .footer-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
         }
         @media (min-width: 640px) {
-          .footer-grid { grid-template-columns: repeat(2, 1fr); }
+          .footer-grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 3rem; }
         }
         @media (min-width: 1024px) {
-          .footer-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+          .footer-grid { flex-wrap: nowrap; justify-content: space-between; gap: 2rem; }
         }
       `}} />
       <div className="footer-grid" style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'left', marginBottom: '3rem' }}>
