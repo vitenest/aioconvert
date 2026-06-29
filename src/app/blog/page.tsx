@@ -25,7 +25,7 @@ export default function BlogIndexPage() {
               <Link 
                 href={`/blog/${post.slug}`} 
                 key={post.slug}
-                className="glass-panel"
+                className="glass-panel blog-card"
                 style={{ 
                   display: 'flex', 
                   flexDirection: 'column', 
@@ -34,14 +34,6 @@ export default function BlogIndexPage() {
                   overflow: 'hidden',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   cursor: 'pointer'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
                 }}
               >
                 <div style={{ width: '100%', height: '200px', position: 'relative', overflow: 'hidden' }}>
@@ -65,6 +57,12 @@ export default function BlogIndexPage() {
           </div>
         </div>
       </main>
+      <style dangerouslySetInnerHTML={{__html: `
+        .blog-card:hover {
+          transform: translateY(-4px) !important;
+          box-shadow: var(--shadow-lg) !important;
+        }
+      `}} />
       <Footer />
     </>
   );
