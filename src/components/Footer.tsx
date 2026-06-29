@@ -6,7 +6,20 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer style={{ padding: '4rem 2rem 2rem', color: '#e5e7eb', fontSize: '0.9rem', backgroundColor: '#000000', borderTop: '1px solid #1f2937', marginTop: '4rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'left', marginBottom: '3rem' }}>
+      <style dangerouslySetInnerHTML={{__html: `
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        @media (min-width: 640px) {
+          .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .footer-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        }
+      `}} />
+      <div className="footer-grid" style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'left', marginBottom: '3rem' }}>
         
         {/* Brand & Description */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
