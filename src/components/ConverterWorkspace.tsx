@@ -457,7 +457,9 @@ export default function ConverterWorkspace({ initialCategory, initialFromFormat,
                   </div>
                 </div>
                 
-                <ResponsiveAd margin="1rem 0" />
+                <div className="hidden md:block">
+                  <ResponsiveAd margin="1rem 0" />
+                </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {files.map(file => (

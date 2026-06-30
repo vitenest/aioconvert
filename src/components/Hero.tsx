@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import ResponsiveAd from '@/components/ResponsiveAd';
@@ -41,7 +43,20 @@ export default function Hero() {
       </p>
       
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
-        <Link href="#convert" className="btn btn-primary" style={{ padding: '0.85rem 2.5rem', fontSize: '1.05rem', textDecoration: 'none' }}>
+        <Link 
+          href="#convert" 
+          className="btn btn-primary" 
+          style={{ padding: '0.85rem 2.5rem', fontSize: '1.05rem', textDecoration: 'none' }}
+          onClick={(e) => {
+            const target = document.getElementById('convert');
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth' });
+              // Update URL without a page jump
+              window.history.pushState(null, '', '#convert');
+            }
+          }}
+        >
           Start Converting
         </Link>
       </div>
